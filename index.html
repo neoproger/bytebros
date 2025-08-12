@@ -2,603 +2,582 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ByteBros — Техническая поддержка офисов (Бишкек)</title>
-  <meta name="description" content="ByteBros — выездная и удалённая IT-поддержка в Бишкеке. Установка Windows, Office и платных программ, обслуживание офисов, бесплатная диагностика." />
-  <meta name="keywords" content="IT поддержка Бишкек, установка Windows Бишкек, выездная помощь, WhatsApp, Telegram" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>ByteBros — IT‑поддержка офисов, выезд и удалённо (Бишкек)</title>
+  <meta name="description" content="ByteBros — выездная и удалённая IT‑поддержка в Бишкеке. Ответ за 5 минут, выезд в течение 30 минут. Установка Windows, Office и ПО; настройка сети; бесплатная диагностика." />
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#0a6ddc">
+
   <style>
+    /* =============== TOKENS (Minimal Mono) =============== */
     :root{
-      --accent:#0b79d0;
-      --bg:#ffffff;
-      --text:#111827;
-      --muted:#6b7280;
-      --card:#f8fafc;
-      --glass: rgba(2,6,23,0.06);
-      --radius:12px;
-      --fab-size:56px;
-    }
-    [data-theme="dark"]{
-      --bg:#07101a;
+      --accent:#0a6ddc;
+      --bg:#0b1220;
       --text:#e6eef8;
-      --muted:#9aa6bb;
-      --card:#0b1220;
-      --glass: rgba(255,255,255,0.04);
+      --muted:#a0aec0;
+      --surface:#101827;
+      --stroke: 0 0% 100% / .10;
+      --radius:12px;
+      --shadow: 0 10px 28px rgba(0,0,0,.45);
+      --container: 1100px;
+      --pad: clamp(16px,3vw,28px);
+      --gap: clamp(10px,2.2vw,20px);
+      --fs-1: clamp(28px, 2.4vw + 14px, 44px);
+      --fs-2: clamp(18px, 1vw + 14px, 24px);
+      --fs-0: 16px;
+      --fab: 56px;
+      --bar-h: 56px;
     }
+    /* Light mode variables (for toggle) */
+    [data-theme="light"]{
+      --bg:#ffffff;
+      --text:#0f172a;
+      --muted:#667085;
+      --surface:#f8fafc;
+      --stroke: 224 12% 18% / .10;
+      --shadow: 0 10px 28px rgba(2,6,23,.06);
+    }
+
+    /* =============== BASE =============== */
     *{box-sizing:border-box}
-    body{font-family:Inter, ui-sans-serif, system-ui, -apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;margin:0;background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
-    .container{max-width:1100px;margin:0 auto;padding:28px}
-    header{display:flex;align-items:center;justify-content:space-between;gap:12px}
-    .brand{display:flex;align-items:center;gap:12px}
-    .brand img{width:56px;height:56px;border-radius:12px;object-fit:contain}
-    nav a{margin-left:16px;text-decoration:none;color:var(--muted);font-weight:600}
-    .hero{display:grid;grid-template-columns:1fr 480px;gap:28px;align-items:start;padding:36px 0}
-    h1{font-size:28px;margin:0 0 8px}
-    p.lead{margin:0 0 18px;color:var(--muted)}
-    .card{background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:0 6px 18px var(--glass)}
-    .services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:18px}
-    .service{border-radius:10px;padding:14px;border:1px solid rgba(0,0,0,0.06);background:transparent}
-    .btn{display:inline-block;padding:10px 14px;border-radius:10px;text-decoration:none;background:var(--accent);color:white;font-weight:600}
-    .secondary{background:transparent;border:1px solid var(--accent);color:var(--accent)}
-    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-    img{max-width:100%;border-radius:8px}
-    footer{margin-top:36px;padding:24px 0;color:var(--muted);border-top:1px solid rgba(0,0,0,0.06)}
-    .pill{padding:6px 10px;border-radius:999px;background:rgba(11,121,208,0.12);color:var(--accent);font-weight:600}
-    @media (max-width:980px){.hero{grid-template-columns:1fr;}.gallery{grid-template-columns:repeat(2,1fr)}}
-    .lang-toggle,.dark-toggle{cursor:pointer;padding:8px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);background:none;font-weight:600}
-    .popular{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:12px}
-    .popular .item{background:rgba(255,255,255,0.02);padding:12px;border-radius:10px;border:1px solid rgba(0,0,0,0.04)}
-    .promo{background:linear-gradient(90deg,#0b79d0,#0b6fb8);color:white;padding:12px;border-radius:10px;margin-top:12px;font-weight:700}
-    /* Fixed FAB area */
-    .fixed-fab{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:12px;z-index:1200;align-items:flex-end}
-    .fab{width:var(--fab-size);height:var(--fab-size);border-radius:999px;display:inline-grid;place-items:center;color:white;text-decoration:none;box-shadow:0 8px 20px rgba(2,6,23,0.18);font-weight:700}
-    .fab.whatsapp{background:#25D366}
-    .fab.telegram{background:#2A8AE5}
-    .fab.call{background:#0b79d0}
-    .call-popup{position:fixed;right:86px;bottom:18px;background:var(--card);padding:12px;border-radius:10px;box-shadow:0 12px 30px rgba(2,6,23,0.16);display:none;z-index:1300}
-    .call-popup a{display:block;padding:8px;border-radius:8px;text-decoration:none;color:var(--text);margin-bottom:6px;border:1px solid rgba(0,0,0,0.05)}
-    .call-popup .label{font-size:13px;color:var(--muted);margin-bottom:6px}
-    @media (max-width:480px){ .call-popup{right:72px} }
-    .icon{display:inline-block;width:18px;height:18px;vertical-align:middle;margin-right:8px}
-    /* Calculator styles */
-    .calculator{margin-top:18px;padding:12px;border-radius:10px;border:1px solid rgba(0,0,0,0.04);background:transparent}
-    .calc-row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
-    .calc-row label{flex:1;font-weight:600}
-    .calc-controls{display:flex;gap:8px;align-items:center}
-    .calc-controls input[type="number"]{width:80px;padding:8px;border-radius:8px;border:1px solid rgba(0,0,0,0.08);background:transparent}
-    .total-box{margin-top:8px;padding:10px;border-radius:8px;background:rgba(11,121,208,0.06);font-weight:700}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: Inter, ui-sans-serif, system-ui, -apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background:var(--bg); color:var(--text); line-height:1.55; -webkit-font-smoothing:antialiased; font-size:var(--fs-0);
+    }
+    a{color:inherit; text-decoration:none}
+    img,svg{display:block; max-width:100%}
+    .container{max-width:var(--container); margin:0 auto; padding:var(--pad)}
+    .stack{display:flex; flex-direction:column; gap:var(--gap)}
+    .muted{color:var(--muted)}
+
+    /* =============== HEADER =============== */
+    header{display:flex; align-items:center; justify-content:space-between; gap:12px}
+    .brand{display:flex; align-items:center; gap:12px}
+    .logo{width:44px; height:44px; border-radius:12px; object-fit:contain}
+    .brand-title{font-weight:800}
+    .brand-sub{font-size:12px; color:var(--muted)}
+    nav{display:flex; gap:14px}
+    nav a{color:var(--muted); font-weight:600; padding:6px 8px; border-radius:8px}
+    .controls{display:flex; gap:8px; align-items:center}
+    .chip{
+      appearance:none; border:1px solid hsl(var(--stroke)); background:transparent; color:inherit;
+      padding:8px 10px; border-radius:12px; font-weight:600; cursor:pointer
+    }
+    .chip:focus-visible{outline:0; box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent)}
+
+    /* =============== MOBILE TOP BAR (sticky) =============== */
+    .topbar{
+      position:sticky; top:0; z-index:1200; display:none; height:var(--bar-h);
+      background: var(--surface);
+      border-bottom:1px solid hsl(var(--stroke));
+    }
+    .topbar-inner{
+      max-width:var(--container); margin:0 auto; padding:0 12px; height:100%;
+      display:flex; align-items:center; justify-content:space-between; gap:8px;
+    }
+    .topbar .btn{height:38px; padding:0 12px}
+    .topbar .phone{font-weight:800}
+
+    /* =============== HERO =============== */
+    .hero{display:grid; grid-template-columns:1.35fr 1fr; gap:clamp(16px,3vw,28px); align-items:start; margin-top:8px}
+    .kicker{display:inline-flex; gap:8px; align-items:center; font-weight:700; color:var(--accent);
+      background:color-mix(in srgb, var(--accent) 18%, transparent); padding:6px 10px; border-radius:999px; width:max-content}
+    h1{font-size:var(--fs-1); line-height:1.12; margin:8px 0 10px}
+    .lead{font-size:var(--fs-2); color:var(--muted); margin:0 0 8px}
+    .cta-row{display:flex; gap:8px; flex-wrap:wrap}
+
+    .card{background:var(--surface); border:1px solid hsl(var(--stroke)); border-radius:var(--radius); padding:clamp(14px,2.4vw,18px); box-shadow:var(--shadow)}
+    .pill{padding:6px 10px; border-radius:999px; background:color-mix(in srgb, var(--accent) 18%, transparent); color:var(--accent); font-weight:700}
+
+    .btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:10px 14px; border-radius:12px; font-weight:700; border:1px solid transparent; cursor:pointer}
+    .btn.primary{background:var(--accent); color:#fff}
+    .btn.secondary{background:transparent; color:var(--accent); border-color:color-mix(in srgb, var(--accent) 55%, transparent)}
+
+    /* =============== SECTIONS =============== */
+    .services{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px}
+    .service{border:1px solid hsl(var(--stroke)); border-radius:12px; padding:14px; display:grid; gap:6px}
+
+    .steps{display:grid; grid-template-columns:repeat(3,1fr); gap:10px}
+    .step{border:1px solid hsl(var(--stroke)); border-radius:12px; padding:14px}
+
+    .badges{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px}
+    .badge{border:1px solid hsl(var(--stroke)); border-radius:12px; padding:14px; display:grid; gap:6px}
+
+    .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    .list{margin:8px 0 0 18px}
+
+    /* =============== FORM =============== */
+    .form{display:grid; gap:8px}
+    .form .row{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+    input, textarea{
+      width:100%; padding:10px 12px; border-radius:12px; border:1px solid hsl(var(--stroke));
+      background:transparent; color:inherit; font:inherit
+    }
+
+    /* =============== MAP TABS =============== */
+    .tabs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px}
+    .tab{padding:8px 12px; border:1px solid hsl(var(--stroke)); border-radius:999px; cursor:pointer; font-weight:700; background:transparent}
+    .tab.active{background:var(--accent); color:#fff; border-color:transparent}
+    .mapframe{width:100%; aspect-ratio: 16 / 10; border:1px solid hsl(var(--stroke)); border-radius:12px; overflow:hidden}
+    .mapframe iframe{width:100%; height:100%; border:0}
+
+    /* =============== FOOTER =============== */
+    footer{margin-top:28px; padding-top:18px; color:var(--muted); border-top:1px solid hsl(var(--stroke)); font-size:14px}
+
+    /* =============== FABs =============== */
+    .fixed-fab{position:fixed; right:16px; bottom:16px; display:flex; flex-direction:column; gap:10px; align-items:flex-end; z-index:1100}
+    .fab{width:var(--fab); height:var(--fab); border-radius:999px; display:grid; place-items:center; color:#fff; text-decoration:none; font-weight:800; box-shadow:0 10px 24px rgba(0,0,0,.45)}
+    .whatsapp{background:#25D366} .telegram{background:#2A8AE5} .call{background:var(--accent)}
+    .call-popup{position:fixed; right:calc(16px + var(--fab) + 10px); bottom:16px; background:var(--surface); padding:12px; border-radius:12px; border:1px solid hsl(var(--stroke)); box-shadow:var(--shadow); display:none; z-index:1300; width:240px}
+    .call-popup .label{font-size:12px; color:var(--muted); margin-bottom:6px}
+    .call-popup a{display:block; padding:8px; border-radius:12px; border:1px solid hsl(var(--stroke)); margin-bottom:6px; color:inherit}
+
+    /* =============== RESPONSIVE =============== */
+    @media (max-width:980px){
+      nav{display:none}
+      .hero{grid-template-columns:1fr}
+      .grid-2{grid-template-columns:1fr}
+      .steps{grid-template-columns:1fr}
+      .topbar{display:block}
+      body{scroll-padding-top:var(--bar-h)}
+    }
+    @media (max-width:520px){
+      .form .row{grid-template-columns:1fr}
+    }
+    @media (prefers-reduced-motion:no-preference){
+      .btn,.fab{transition:transform .2s ease}
+      .btn:hover{transform:translateY(-1px)}
+      .fab:hover{transform:translateY(-2px)}
+    }
   </style>
 </head>
-<body data-theme="light">
-  <div class="container">
+
+<!-- Dark theme by default -->
+<body data-theme="dark">
+  <!-- Mobile sticky top bar -->
+  <div class="topbar" aria-hidden="true">
+    <div class="topbar-inner">
+      <div class="phone"><a href="tel:+996505231104">+996 505 231104</a></div>
+      <div style="display:flex; gap:8px">
+        <a href="#contact" class="btn secondary">Заказать</a>
+        <a href="tel:+996505231104" class="btn primary">Позвонить</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container stack">
+    <!-- Header -->
     <header>
       <div class="brand">
-        <img src="logo.PNG" alt="ByteBros logo">
+        <img class="logo" src="logo.PNG" alt="ByteBros logo" decoding="async">
         <div>
-          <div style="font-weight:800" data-i18n="brandTitle">ByteBros</div>
-          <div style="font-size:12px;color:var(--muted)" data-i18n="brandSubtitle">Техническая поддержка офисов и установка ПО</div>
+          <div class="brand-title">ByteBros</div>
+          <div class="brand-sub">Техническая поддержка офисов и установка ПО</div>
         </div>
       </div>
-
-      <div style="display:flex;align-items:center;gap:12px">
-        <nav>
-          <a href="#services" data-i18n="navServices">Услуги</a>
-          <a href="#pricing" data-i18n="navPricing">Цены</a>
-          <a href="#contact" data-i18n="navContacts">Контакты</a>
+      <div class="controls">
+        <nav aria-label="Primary">
+          <a href="#services">Услуги</a>
+          <a href="#how">Как работаем</a>
+          <a href="#map">Карта</a>
+          <a href="#faq">FAQ</a>
+          <a href="#contact">Контакты</a>
         </nav>
-
-        <button class="lang-toggle" id="langBtn">EN</button>
-        <button class="dark-toggle" id="themeBtn" data-i18n="btnTheme">Тема</button>
+        <button class="chip" id="langBtn" aria-label="Language">EN</button>
+        <button class="chip" id="themeBtn" aria-label="Theme">Тема</button>
       </div>
     </header>
 
-    <main>
-      <section class="hero" aria-labelledby="main-title">
-        <div>
-          <h1 id="main-title" data-i18n="heroTitle">Быстрая и надёжная поддержка — установка Windows, Office, Photoshop и другое</h1>
-          <p class="lead" data-i18n="heroLead">Мы помогаем офисам поддерживать IT-инфраструктуру: установка ОС и программ, настройка сети, резервное копирование, ускорение работы и выездная помощь по городу Бишкек.</p>
-
-          <div class="card" aria-labelledby="reaction">
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <div>
-                <strong id="reaction" data-i18n="reactionTimeTitle">Обычное время реакции</strong>
-                <div style="color:var(--muted);font-size:13px" data-i18n="reactionTimeDesc">Удалённо: в тот же день · Выезд: на следующий рабочий день</div>
-              </div>
-              <div class="pill" data-i18n="freeDiag">Бесплатная диагностика</div>
-            </div>
-
-            <div class="services-grid" id="services">
-              <div class="service">
-                <strong data-i18n="serviceOS">ОС и восстановление</strong>
-                <div style="color:var(--muted);font-size:13px" data-i18n="serviceOSdesc">Установка Windows, обновления, драйверы, восстановление данных. Стоимость установки Windows от 1200 с (включая бесплатный выезд по Бишкеку).</div>
-              </div>
-              <div class="service">
-                <strong data-i18n="serviceOffice">Office и продуктивность</strong>
-                <div style="color:var(--muted);font-size:13px" data-i18n="serviceOfficedesc">Установка Office и других платных программ — от 500 с. Помогаем с лицензиями.</div>
-              </div>
-              <div class="service">
-                <strong data-i18n="serviceGraphics">Графика и дизайн</strong>
-                <div style="color:var(--muted);font-size:13px" data-i18n="serviceGraphicsdesc">Установка Photoshop, Illustrator, плагины и профили; настройка рабочего места дизайнера.</div>
-              </div>
-              <div class="service">
-                <strong data-i18n="serviceMac">macOS — платные программы</strong>
-                <div style="color:var(--muted);font-size:13px" data-i18n="serviceMacdesc">Установка платных приложений на macOS с лицензиями — от 700 с.</div>
-              </div>
-              <div class="service">
-                <strong data-i18n="serviceFix">Небольшие исправления</strong>
-                <div style="color:var(--muted);font-size:13px" data-i18n="serviceFixdesc">Мелкие настройки и починка — от 300 с.</div>
-              </div>
-              <div class="service">
-                <strong data-i18n="serviceMaint">Почасовая поддержка</strong>
-                <div style="color:var(--muted);font-size:13px" data-i18n="serviceMaintdesc">Почасовая поддержка: 600 с / час.</div>
-              </div>
-            </div>
-
-            <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-              <a class="btn" href="#contact" data-i18n="btnOrder">Заказать выезд</a>
-              <a class="btn secondary" href="#pricing" data-i18n="btnPricing">Посмотреть цены</a>
-            </div>
-          </div>
-
-          <div class="promo" data-i18n="promoText">Акция: бесплатная диагностика и бесплатный выезд при заказе установки Windows (до конца месяца).</div>
-
-          <!-- Calculator -->
-          <div class="calculator" aria-label="Calculator">
-            <h3 data-i18n="calcTitle">Калькулятор цены</h3>
-
-            <div class="calc-row">
-              <label><input type="checkbox" id="c_win" checked> <span data-i18n="calcWin">Установка Windows</span></label>
-              <div class="calc-controls">
-                <input type="number" id="q_win" min="0" value="1" aria-label="Windows quantity" />
-                <span data-i18n="ks">шт.</span>
-              </div>
-            </div>
-
-            <div class="calc-row">
-              <label><input type="checkbox" id="c_off"> <span data-i18n="calcOffice">Установка Office / платных программ</span></label>
-              <div class="calc-controls">
-                <input type="number" id="q_off" min="0" value="0" />
-                <span data-i18n="ks">шт.</span>
-              </div>
-            </div>
-
-            <div class="calc-row">
-              <label><input type="checkbox" id="c_mac"> <span data-i18n="calcMac">Установка платных программ на macOS</span></label>
-              <div class="calc-controls">
-                <input type="number" id="q_mac" min="0" value="0" />
-                <span data-i18n="ks">шт.</span>
-              </div>
-            </div>
-
-            <div class="calc-row">
-              <label><input type="checkbox" id="c_fix"> <span data-i18n="calcFix">Небольшие исправления (фикс)</span></label>
-              <div class="calc-controls">
-                <input type="number" id="q_fix" min="0" value="0" />
-                <span data-i18n="ks">шт.</span>
-              </div>
-            </div>
-
-            <div class="calc-row">
-              <label><input type="checkbox" id="c_hour"> <span data-i18n="calcHour">Почасовая поддержка</span></label>
-              <div class="calc-controls">
-                <input type="number" id="q_hour" min="0" value="0" />
-                <span data-i18n="hours">ч.</span>
-              </div>
-            </div>
-
-            <div class="calc-row">
-              <label><input type="checkbox" id="c_visit"> <span data-i18n="calcVisit">Выезд по Бишкеку (фикс)</span></label>
-              <div class="calc-controls">
-                <input type="number" id="q_visit" min="0" value="1" />
-              </div>
-            </div>
-
-            <div class="total-box" id="totalBox">Итог: <span id="totalAmount">0</span> KGS</div>
-
-            <div style="margin-top:8px;display:flex;gap:8px">
-              <button id="sendWhats" class="btn">Отправить в WhatsApp</button>
-              <button id="sendTg" class="btn secondary">Отправить в Telegram</button>
-            </div>
-            <div style="margin-top:8px;color:var(--muted);font-size:13px" data-i18n="calcNote">После отправки мы свяжемся для уточнения и подтверждения выезда.</div>
-          </div>
-
-          <!-- Popular services -->
-          <div style="margin-top:18px">
-            <h3 data-i18n="popularTitle">Популярные услуги</h3>
-            <div class="popular" aria-label="Popular services">
-              <div class="item">
-                <div style="font-weight:700" data-i18n="pop1Title">Установка Windows</div>
-                <div style="color:var(--muted);font-size:13px" data-i18n="pop1Desc">От 1200 с • Включен бесплатный выезд по Бишкеку</div>
-              </div>
-              <div class="item">
-                <div style="font-weight:700" data-i18n="pop2Title">Установка Office и ПО</div>
-                <div style="color:var(--muted);font-size:13px" data-i18n="pop2Desc">От 500 с • Помощь с лицензиями</div>
-              </div>
-              <div class="item">
-                <div style="font-weight:700" data-i18n="pop3Title">macOS — платные приложения</div>
-                <div style="color:var(--muted);font-size:13px" data-i18n="pop3Desc">От 700 с • С лицензиями</div>
-              </div>
-              <div class="item">
-                <div style="font-weight:700" data-i18n="pop4Title">Небольшие исправления</div>
-                <div style="color:var(--muted);font-size:13px" data-i18n="pop4Desc">От 300 с</div>
-              </div>
-            </div>
-          </div>
-
+    <!-- Hero -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="stack">
+        <span class="kicker">Бесплатная диагностика</span>
+        <h1 id="hero-title">IT‑поддержка в Бишкеке — выезд и удалённо</h1>
+        <p class="lead">
+          Отвечаем обычно за <strong>5 минут</strong>, выезд по Бишкеку — в течение <strong>30 минут</strong>.
+          Windows/Office/ПО, сети, резервные копии, ускорение ПК и ноутбуков.
+        </p>
+        <div class="cta-row">
+          <a class="btn primary" href="#contact">Заказать выезд</a>
+          <a class="btn secondary" href="#pricing">Посмотреть цены</a>
+          <span class="pill">Тел.: <a href="tel:+996505231104" style="color:inherit">+996 505 231104</a></span>
         </div>
 
-        <aside class="card" id="contact" aria-labelledby="contact-title">
-          <div id="contact-title" style="font-weight:700" data-i18n="contactTitle">Связаться с ByteBros</div>
-          <div style="color:var(--muted);font-size:13px" data-i18n="contactLead">Быстрее всего: WhatsApp / Telegram / звонок.</div>
-
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
-            <a id="whatsappLink" class="btn whatsapp" href="https://wa.me/996505231104" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-              <!-- WhatsApp SVG -->
-              <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden>
-                <path d="M20.52 3.48a11.9 11.9 0 10-16.84 16.84L3 21l1.7-.45A11.9 11.9 0 0020.52 3.48z" fill="#25D366"/>
-                <path d="M17.6 14.2c-.4-.2-2.3-1.1-2.7-1.2-.4-.1-.7-.2-1 .2-.2.4-.8 1.2-1 1.4-.2.2-.4.3-.8.1-.4-.2-1.6-.6-3-1.9-1.1-1.1-1.8-2.5-2-2.9-.2-.4 0-.7.1-1 .1-.4.6-1 1-1.5.3-.4.4-.6.6-.9.2-.2.1-.4 0-.6-.1-.2-1-2.4-1.4-3.3-.4-.9-.8-.7-1.1-.7-.3 0-.6 0-.9 0-.3 0-.9.1-1.4.6-.6.5-.9 1.3-1 1.9-.2.6-.6 2.6.6 5.1 1.1 2.3 3.4 4.9 7.3 6.6 3.8 1.7 4.8 1.2 5.6 1.1.7-.1 2.4-.9 2.7-2.1.3-1.2.3-2.2.2-2.4-.1-.1-.3-.2-.7-.4z" fill="#fff"/>
-              </svg>
-              <span data-i18n="whLabel">WhatsApp</span>
-            </a>
-
-            <a id="telegramLink" class="btn secondary telegram" href="https://t.me/eralinx" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:8px" aria-label="Telegram">
-              <!-- Telegram SVG -->
-              <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden>
-                <path d="M21 3L3 10.5l4.5 1.6L18 6l-5.5 7.6L21 3z" fill="#2A8AE5"/>
-              </svg>
-              <span data-i18n="tgLabel">Telegram</span>
-            </a>
-
-            <button id="callBtn" class="btn" style="background:#0b6fb8;border:0;display:inline-flex;align-items:center;gap:8px" aria-haspopup="true" aria-controls="callPopup">
-              <!-- Phone SVG -->
-              <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden>
-                <path d="M6.6 10.8a15 15 0 006.6 6.6l2.1-2.1a1 1 0 011.1-.2c1.2.5 2.5.8 3.8.8a1 1 0 011 1V21a1 1 0 01-1 1A17 17 0 013 5a1 1 0 011-1h2.7a1 1 0 011 1c0 1.3.3 2.6.8 3.8.2.3 0 .8-.2 1.1l-2.1 2.1z" fill="#fff"/>
-              </svg>
-              <span data-i18n="callLabelShort">Позвонить</span>
-            </button>
+        <!-- Mini‑pricing -->
+        <div id="pricing" class="card">
+          <strong>Цены (примерно)</strong>
+          <div class="grid-2">
+            <div>
+              <ul class="list">
+                <li>Установка Windows — от 1200 с (выезд включён)</li>
+                <li>Office/платные программы — от 500 с</li>
+                <li>macOS — платные приложения — от 700 с</li>
+              </ul>
+            </div>
+            <div>
+              <ul class="list">
+                <li>Небольшие исправления — от 300 с</li>
+                <li>Почасовая поддержка — 600 с/час</li>
+                <li>Выезд по Бишкеку — 500 с</li>
+              </ul>
+            </div>
           </div>
-
-          <div style="margin-top:8px;color:var(--muted);font-size:13px" data-i18n="workHours">Работаем Пн–Сб 9:00–19:00 — Бишкек</div>
-        </aside>
-      </section>
-
-      <section id="pricing" class="card" style="margin-top:18px">
-        <h2 style="margin-top:0" data-i18n="pricingTitle">Цены (примерные)</h2>
-        <div class="grid-2">
-          <div>
-            <strong data-i18n="remoteSupport">Удалённая поддержка</strong>
-            <ul>
-              <li data-i18n="remoteDiag">Диагностика: бесплатно</li>
-              <li data-i18n="remoteSmallFix">Небольшие исправления: от 300 с</li>
-              <li data-i18n="remoteHourly">Почасовая поддержка: 600 с / час</li>
-            </ul>
-          </div>
-          <div>
-            <strong data-i18n="onsiteSupport">Выезд (по Бишкеку)</strong>
-            <ul>
-              <li data-i18n="onsiteVisit">Выезд: 500 с</li>
-              <li data-i18n="onsiteOS">Установка Windows: от 1200 с (включен бесплатный выезд)</li>
-              <li data-i18n="onsiteOffice">Установка Office и платных программ: от 500 с</li>
-              <li data-i18n="onsiteMac">Установка платных программ на macOS (с лицензиями): от 700 с</li>
-            </ul>
-          </div>
+          <div class="muted">Итоговая смета — после диагностики.</div>
         </div>
-        <div style="margin-top:12px;color:var(--muted);font-size:13px" data-i18n="priceNote">Цены ориентировочные — финальная смета после диагностики.</div>
-      </section>
+      </div>
 
-      <section style="margin-top:18px">
-        <h3 data-i18n="processTitle">Процесс работы</h3>
-        <ol>
-          <li data-i18n="process1">Свяжитесь с нами (WhatsApp / Telegram / звонок)</li>
-          <li data-i18n="process2">Бесплатная диагностика и смета</li>
-          <li data-i18n="process3">Удалённое решение или выезд</li>
-          <li data-i18n="process4">Поддержка и опциональные планы обслуживания</li>
-        </ol>
-      </section>
+      <!-- Callback form -->
+      <aside class="card" aria-labelledby="cb-title" id="callback">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+          <div>
+            <div id="cb-title" style="font-weight:800">Оставьте номер — перезвоним</div>
+            <div class="muted">Пн–Сб 9:00–19:00 · обычно отвечаем за <strong>5 минут</strong></div>
+          </div>
+          <span class="pill">Скидка −20% на первый вызов</span>
+        </div>
+        <div class="form" style="margin-top:8px">
+          <div class="row">
+            <input id="f_name" placeholder="Как к вам обращаться">
+            <input id="f_phone" placeholder="Телефон">
+          </div>
+          <textarea id="f_msg" rows="3" placeholder="Коротко опишите проблему (необязательно)"></textarea>
+          <div class="cta-row">
+            <button id="cb_whats" class="btn primary">Отправить в WhatsApp</button>
+            <button id="cb_tg" class="btn secondary">Отправить в Telegram</button>
+          </div>
+          <div class="muted">Нажимая, вы перейдёте в мессенджер с подготовленным текстом.</div>
+        </div>
+      </aside>
+    </section>
 
-    </main>
+    <!-- Services -->
+    <section id="services" class="stack" aria-labelledby="services-title">
+      <h2 id="services-title" style="margin:0">Услуги</h2>
+      <div class="services">
+        <div class="service"><strong>Ремонт/обслуживание ПК</strong><div class="muted">Диагностика, чистка, апгрейд, драйверы, ускорение.</div></div>
+        <div class="service"><strong>Ноутбуки</strong><div class="muted">Охлаждение, замена SSD/HDD, клавиатуры, батареи.</div></div>
+        <div class="service"><strong>Принтеры и МФУ</strong><div class="muted">Драйверы, сеть, расходники, удалённая печать.</div></div>
+        <div class="service"><strong>Сеть и интернет</strong><div class="muted">Wi‑Fi, VPN, роутеры, IP‑адреса, резервирование каналов.</div></div>
+        <div class="service"><strong>Установка ОС</strong><div class="muted">Windows/macOS/Linux, восстановление, активация.</div></div>
+        <div class="service"><strong>ПО и лицензии</strong><div class="muted">Office, Photoshop/Illustrator, бухучёт и др.</div></div>
+      </div>
+    </section>
+
+    <!-- Calculator -->
+    <section class="card" aria-labelledby="calc-title">
+      <h2 id="calc-title" style="margin:0">Калькулятор цены</h2>
+      <div class="stack" style="margin-top:6px">
+        <div style="display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center">
+          <label><input type="checkbox" id="c_win" checked> Установка Windows</label>
+          <span><input type="number" id="q_win" min="0" value="1" style="width:100px"> шт.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center">
+          <label><input type="checkbox" id="c_off"> Office / платные программы</label>
+          <span><input type="number" id="q_off" min="0" value="0" style="width:100px"> шт.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center">
+          <label><input type="checkbox" id="c_mac"> Платные приложения на macOS</label>
+          <span><input type="number" id="q_mac" min="0" value="0" style="width:100px"> шт.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center">
+          <label><input type="checkbox" id="c_fix"> Небольшие исправления (фикс)</label>
+          <span><input type="number" id="q_fix" min="0" value="0" style="width:100px"> шт.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center">
+          <label><input type="checkbox" id="c_hour"> Почасовая поддержка</label>
+          <span><input type="number" id="q_hour" min="0" value="0" style="width:100px"> ч.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center">
+          <label><input type="checkbox" id="c_visit"> Выезд по Бишкеку (фикс)</label>
+          <span><input type="number" id="q_visit" min="0" value="1" style="width:100px"></span>
+        </div>
+
+        <div class="pill" id="totalBox">Итог: <span id="totalAmount">0</span> KGS</div>
+
+        <div class="cta-row">
+          <button id="sendWhats" class="btn primary">Отправить в WhatsApp</button>
+          <button id="sendTg" class="btn secondary">Отправить в Telegram</button>
+        </div>
+        <div class="muted">После отправки мы свяжемся для подтверждения выезда.</div>
+      </div>
+    </section>
+
+    <!-- How we work -->
+    <section id="how" class="stack" aria-labelledby="how-title">
+      <h2 id="how-title" style="margin:0">Как мы работаем</h2>
+      <div class="steps">
+        <div class="step"><strong>1. Заявка</strong><div class="muted">Пишите/звоните — отвечаем обычно за <strong>5 минут</strong>.</div></div>
+        <div class="step"><strong>2. Диагностика</strong><div class="muted">Бесплатно. Смета и сроки до начала работ.</div></div>
+        <div class="step"><strong>3. Решение</strong><div class="muted">Выезд по Бишкеку — в течение <strong>30 минут</strong> или удалённо.</div></div>
+      </div>
+    </section>
+
+    <!-- Why us -->
+    <section class="stack" aria-labelledby="why-title">
+      <h2 id="why-title" style="margin:0">Почему ByteBros</h2>
+      <div class="badges">
+        <div class="badge"><strong>Опытные мастера</strong><div class="muted">Скорость и аккуратность — приоритет.</div></div>
+        <div class="badge"><strong>Быстрая реакция</strong><div class="muted">Ответ — ~5 минут. Выезд — ~30 минут (по Бишкеку).</div></div>
+        <div class="badge"><strong>Честные цены</strong><div class="muted">Без скрытых работ. Итог после диагностики.</div></div>
+        <div class="badge"><strong>Для офисов</strong><div class="muted">Абонентское обслуживание и почасовые работы.</div></div>
+      </div>
+    </section>
+
+    <!-- MAP -->
+    <section id="map" class="card" aria-labelledby="map-title">
+      <h2 id="map-title" style="margin:0">Где работаем</h2>
+      <div class="muted">Бишкек и ближайшие районы. Выезд — в пределах города.</div>
+      <div class="tabs" role="tablist" aria-label="Map tabs">
+        <button class="tab active" role="tab" aria-selected="true" aria-controls="map2gis" id="tab2gis">2GIS</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="mapgmaps" id="tabgmaps">Google</button>
+      </div>
+      <div class="mapframe">
+        <iframe id="map2gis" title="2GIS Bishkek" src="https://2gis.kg/bishkek" loading="lazy"></iframe>
+        <iframe id="mapgmaps" title="Google Maps Bishkek" src="https://www.google.com/maps?q=Bishkek&output=embed" loading="lazy" hidden></iframe>
+      </div>
+      <div class="muted" style="margin-top:6px">Примечание: карты загружаются с внешних сервисов и могут устанавливать свои cookie.</div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="card" aria-labelledby="faq-title">
+      <h2 id="faq-title" style="margin:0">FAQ — Частые вопросы</h2>
+      <div class="faq" style="display:grid; gap:8px; margin-top:6px">
+        <details>
+          <summary style="cursor:pointer; font-weight:700">Сколько времени занимает установка Windows?</summary>
+          <p>Обычно 1–2 часа, включая драйверы и базовую настройку. Если нужен перенос данных — дольше.</p>
+        </details>
+        <details>
+          <summary style="cursor:pointer; font-weight:700">Вы работаете с лицензиями?</summary>
+          <p>Да, помогаем приобрести и корректно активировать лицензии Windows/Office и другого ПО.</p>
+        </details>
+        <details>
+          <summary style="cursor:pointer; font-weight:700">Можно удалённо решить проблему?</summary>
+          <p>Во многих случаях — да (ПО, драйверы, настройки). Если нужна физическая замена — приедем.</p>
+        </details>
+        <details>
+          <summary style="cursor:pointer; font-weight:700">Есть ли гарантия?</summary>
+          <p>Да, на выполненные работы предоставляем гарантию. Сроки — по типу работ.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- Contacts -->
+    <section id="contact" class="card" aria-labelledby="contact-title" style="scroll-margin-top:16px">
+      <h2 id="contact-title" style="margin:0">Контакты</h2>
+      <div class="stack" style="margin-top:6px">
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <a id="whatsappLink" class="btn primary" href="https://wa.me/996505231104" target="_blank" rel="noopener">WhatsApp</a>
+          <a id="telegramLink" class="btn secondary" href="https://t.me/eralinx" target="_blank" rel="noopener">Telegram</a>
+          <a class="btn secondary" href="tel:+996505231104">Позвонить: +996 505 231104</a>
+        </div>
+        <div class="muted">Работаем Пн–Сб 9:00–19:00 — Бишкек</div>
+        <div class="muted">Доп. номер: <a href="tel:+996999231104">+996 999 231104</a></div>
+      </div>
+    </section>
 
     <footer>
       <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
-        <div style="font-weight:700">ByteBros</div>
-        <div style="color:var(--muted);font-size:13px" data-i18n="footerText">© ByteBros — Профессиональная IT-поддержка</div>
-        <div style="display:flex;gap:8px">
-          <a href="#contact" data-i18n="navContacts">Контакты</a>
-          <a href="#pricing" style="color:var(--muted);" data-i18n="navPricing">Цены</a>
+        <div style="font-weight:800">ByteBros</div>
+        <div>© ByteBros — Профессиональная IT‑поддержка</div>
+        <div style="display:flex;gap:12px">
+          <a href="#contact">Контакты</a>
+          <a href="#services" class="muted">Услуги</a>
         </div>
       </div>
     </footer>
   </div>
 
-  <!-- Fixed FAB buttons -->
-  <div class="fixed-fab" aria-hidden>
-    <a id="fabWhatsapp" class="fab whatsapp" href="https://wa.me/996505231104" target="_blank" rel="noopener noreferrer" title="WhatsApp" aria-label="WhatsApp">
-      <!-- small WhatsApp icon -->
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M20.52 3.48a11.9 11.9 0 10-16.84 16.84L3 21l1.7-.45A11.9 11.9 0 0020.52 3.48z" fill="#fff"/><path d="M17.6 14.2c-.4-.2-2.3-1.1-2.7-1.2-.4-.1-.7-.2-1 .2-.2.4-.8 1.2-1 1.4-.2.2-.4.3-.8.1-.4-.2-1.6-.6-3-1.9-1.1-1.1-1.8-2.5-2-2.9-.2-.4 0-.7.1-1 .1-.4.6-1 1-1.5.3-.4.4-.6.6-.9.2-.2.1-.4 0-.6-.1-.2-1-2.4-1.4-3.3-.4-.9-.8-.7-1.1-.7-.3 0-.6 0-.9 0-.3 0-.9.1-1.4.6-.6.5-.9 1.3-1 1.9-.2.6-.6 2.6.6 5.1 1.1 2.3 3.4 4.9 7.3 6.6 3.8 1.7 4.8 1.2 5.6 1.1.7-.1 2.4-.9 2.7-2.1.3-1.2.3-2.2.2-2.4-.1-.1-.3-.2-.7-.4z" fill="#25D366"/></svg>
-    </a>
-
-    <a id="fabTelegram" class="fab telegram" href="https://t.me/eralinx" target="_blank" rel="noopener noreferrer" title="Telegram" aria-label="Telegram">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M21 3L3 10.5l4.5 1.6L18 6l-5.5 7.6L21 3z" fill="#fff"/></svg>
-    </a>
-
-    <a id="fabCall" class="fab call" href="#" title="Позвонить" role="button" aria-haspopup="true" aria-controls="callPopup">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M6.6 10.8a15 15 0 006.6 6.6l2.1-2.1a1 1 0 011.1-.2c1.2.5 2.5.8 3.8.8a1 1 0 011 1V21a1 1 0 01-1 1A17 17 0 013 5a1 1 0 011-1h2.7a1 1 0 011 1c0 1.3.3 2.6.8 3.8.2.3 0 .8-.2 1.1l-2.1 2.1z" fill="#fff"/></svg>
-    </a>
+  <!-- FABs -->
+  <div class="fixed-fab" aria-hidden="true">
+    <a id="fabWhatsapp" class="fab whatsapp" href="https://wa.me/996505231104" target="_blank" rel="noopener" title="WhatsApp" aria-label="WhatsApp">WA</a>
+    <a id="fabTelegram" class="fab telegram" href="https://t.me/eralinx" target="_blank" rel="noopener" title="Telegram" aria-label="Telegram">TG</a>
+    <a id="fabCall" class="fab call" href="#" title="Позвонить" role="button" aria-haspopup="dialog" aria-controls="callPopup">☎</a>
   </div>
 
   <!-- Call popup -->
-  <div id="callPopup" class="call-popup" role="dialog" aria-hidden="true">
-    <div class="label" data-i18n="callLabel">Выберите номер для звонка</div>
+  <div id="callPopup" class="call-popup" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="callLabel">
+    <div id="callLabel" class="label">Выберите номер для звонка</div>
     <a href="tel:+996505231104">+996 505 231104</a>
     <a href="tel:+996999231104">+996 999 231104</a>
-    <a id="callClose" style="display:block;text-align:right;color:var(--muted);font-size:13px;cursor:pointer">✕</a>
+    <button id="callClose" class="chip" style="width:100%; text-align:center">✕</button>
   </div>
 
-<script>
-  // Translations RU/EN (includes calculator labels)
-  const translations = {
-    ru: {
-      brandTitle: "ByteBros",
-      brandSubtitle: "Техническая поддержка офисов и установка ПО",
-      navServices: "Услуги",
-      navPricing: "Цены",
-      navContacts: "Контакты",
-      btnTheme: "Тема",
-      heroTitle: "Быстрая и надёжная поддержка — установка Windows, Office, Photoshop и другое",
-      heroLead: "Мы помогаем офисам поддерживать IT-инфраструктуру: установка ОС и программ, настройка сети, резервное копирование, ускорение работы и выездная помощь по городу Бишкек.",
-      reactionTimeTitle: "Обычное время реакции",
-      reactionTimeDesc: "Удалённо: в тот же день · Выезд: на следующий рабочий день",
-      freeDiag: "Бесплатная диагностика",
-      serviceOS: "ОС и восстановление",
-      serviceOSdesc: "Установка Windows, обновления, драйверы, восстановление данных. Стоимость установки Windows от 1200 с (включая бесплатный выезд по Бишкеку).",
-      serviceOffice: "Office и продуктивность",
-      serviceOfficedesc: "Установка Office и других платных программ — от 500 с. Помогаем с лицензиями.",
-      serviceGraphics: "Графика и дизайн",
-      serviceGraphicsdesc: "Установка Photoshop, Illustrator, плагины и профили; настройка рабочего места дизайнера.",
-      serviceMac: "macOS — платные программы",
-      serviceMacdesc: "Установка платных приложений на macOS с лицензиями — от 700 с.",
-      serviceFix: "Небольшие исправления",
-      serviceFixdesc: "Мелкие настройки и починка — от 300 с.",
-      serviceMaint: "Почасовая поддержка",
-      serviceMaintdesc: "Почасовая поддержка: 600 с / час.",
-      btnOrder: "Заказать выезд",
-      btnPricing: "Посмотреть цены",
-      promoText: "Акция: бесплатная диагностика и бесплатный выезд при заказе установки Windows (до конца месяца).",
-      calcTitle: "Калькулятор цены",
-      calcWin: "Установка Windows",
-      calcOffice: "Установка Office / платных программ",
-      calcMac: "Установка платных программ на macOS",
-      calcFix: "Небольшие исправления (фикс)",
-      calcHour: "Почасовая поддержка",
-      calcVisit: "Выезд по Бишкеку (фикс)",
-      ks: "шт.",
-      hours: "ч.",
-      calcNote: "После отправки мы свяжемся для уточнения и подтверждения выезда.",
-      whLabel: "WhatsApp",
-      tgLabel: "Telegram",
-      callLabelShort: "Позвонить",
-      contactTitle: "Связаться с ByteBros",
-      contactLead: "Быстрее всего: WhatsApp / Telegram / звонок.",
-      workHours: "Работаем Пн–Сб 9:00–19:00 — Бишкек",
-      pricingTitle: "Цены (примерные)",
-      remoteSupport: "Удалённая поддержка",
-      remoteDiag: "Диагностика: бесплатно",
-      remoteSmallFix: "Небольшие исправления: от 300 с",
-      remoteHourly: "Почасовая поддержка: 600 с / час",
-      onsiteSupport: "Выезд (по Бишкеку)",
-      onsiteVisit: "Выезд: 500 с",
-      onsiteOS: "Установка Windows: от 1200 с (включен бесплатный выезд)",
-      onsiteOffice: "Установка Office и платных программ: от 500 с",
-      onsiteMac: "Установка платных программ на macOS (с лицензиями): от 700 с",
-      priceNote: "Цены ориентировочные — финальная смета после диагностики.",
-      processTitle: "Процесс работы",
-      process1: "Свяжитесь с нами (WhatsApp / Telegram / звонок)",
-      process2: "Бесплатная диагностика и смета",
-      process3: "Удалённое решение или выезд",
-      process4: "Поддержка и опциональные планы обслуживания",
-      footerText: "© ByteBros — Профессиональная IT-поддержка",
-      callLabel: "Выберите номер для звонка"
-    },
-    en: {
-      brandTitle: "ByteBros",
-      brandSubtitle: "Office IT support and software installation",
-      navServices: "Services",
-      navPricing: "Pricing",
-      navContacts: "Contacts",
-      btnTheme: "Theme",
-      heroTitle: "Fast and reliable support — Windows, Office, Photoshop and more",
-      heroLead: "We help offices keep IT running: OS & software installation, network setup, backups, performance tuning and on-site support across Bishkek.",
-      reactionTimeTitle: "Typical response time",
-      reactionTimeDesc: "Remote: same day · On-site: next business day",
-      freeDiag: "Free diagnostics",
-      serviceOS: "OS & recovery",
-      serviceOSdesc: "Windows installation, updates, drivers and data recovery. Windows install from 1200 KGS (includes free on-site visit in Bishkek).",
-      serviceOffice: "Office & productivity",
-      serviceOfficedesc: "Office and paid software installs — from 500 KGS. We assist with licensing.",
-      serviceGraphics: "Graphics & design",
-      serviceGraphicsdesc: "Photoshop, Illustrator, plugins and workspace setup for designers.",
-      serviceMac: "macOS — paid apps",
-      serviceMacdesc: "Paid app installation on macOS with licenses — from 700 KGS.",
-      serviceFix: "Small fixes",
-      serviceFixdesc: "Minor adjustments and fixes — from 300 KGS.",
-      serviceMaint: "Hourly support",
-      serviceMaintdesc: "Hourly support: 600 KGS / hour.",
-      btnOrder: "Book a visit",
-      btnPricing: "See pricing",
-      promoText: "Promo: free diagnostics and free on-site visit when booking a Windows install (until end of month).",
-      calcTitle: "Price calculator",
-      calcWin: "Windows installation",
-      calcOffice: "Office / paid software install",
-      calcMac: "Paid apps on macOS",
-      calcFix: "Small fixes (fixed)",
-      calcHour: "Hourly support",
-      calcVisit: "On-site visit (Bishkek)",
-      ks: "pcs",
-      hours: "hrs",
-      calcNote: "After sending, we'll contact you to confirm and finalize the visit.",
-      whLabel: "WhatsApp",
-      tgLabel: "Telegram",
-      callLabelShort: "Call",
-      contactTitle: "Contact ByteBros",
-      contactLead: "Fastest: WhatsApp / Telegram / call.",
-      workHours: "Working hours: Mon–Sat 9:00–19:00 — Bishkek",
-      pricingTitle: "Pricing (example)",
-      remoteSupport: "Remote support",
-      remoteDiag: "Diagnostics: free",
-      remoteSmallFix: "Small fixes / installs: from 300 KGS",
-      remoteHourly: "Hourly support: 600 KGS / hour",
-      onsiteSupport: "On-site (Bishkek)",
-      onsiteVisit: "Visit: 500 KGS",
-      onsiteOS: "OS installation: from 1200 KGS (free on-site visit included)",
-      onsiteOffice: "Office / paid software install: from 500 KGS",
-      onsiteMac: "Paid apps on macOS (with licenses): from 700 KGS",
-      priceNote: "Prices are indicative — final estimate after diagnostics.",
-      processTitle: "How we work",
-      process1: "Contact us (WhatsApp / Telegram / call)",
-      process2: "Free diagnostics and estimate",
-      process3: "Remote fix or on-site visit",
-      process4: "Ongoing support and optional maintenance plans",
-      footerText: "© ByteBros — Professional IT support",
-      callLabel: "Choose a number to call"
-    }
-  };
-
-  // Prices (KGS)
-  const PRICES = {
-    win: 1200,
-    office: 500,
-    mac: 700,
-    fix: 300,
-    hour: 600,
-    visit: 500
-  };
-
-  // Initial language
-  let lang = 'ru';
-  function applyTranslations(l){
-    document.querySelectorAll('[data-i18n]').forEach(el=>{
-      const key = el.getAttribute('data-i18n');
-      if(translations[l] && translations[l][key]) el.textContent = translations[l][key];
-    });
-    document.documentElement.lang = (l === 'en') ? 'en' : 'ru';
-    document.getElementById('langBtn').textContent = (l === 'en') ? 'RU' : 'EN';
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "ByteBros",
+    "image": "logo.PNG",
+    "address": { "@type": "PostalAddress", "addressLocality": "Bishkek", "addressCountry": "KG" },
+    "telephone": ["+996505231104","+996999231104"],
+    "areaServed": "Bishkek",
+    "openingHours": "Mo-Sa 09:00-19:00",
+    "sameAs": ["https://wa.me/996505231104","https://t.me/eralinx"]
   }
-  applyTranslations(lang);
+  </script>
 
-  document.getElementById('langBtn').addEventListener('click', ()=>{
-    lang = (lang === 'ru') ? 'en' : 'ru'; applyTranslations(lang);
+<script>
+  /* ===== Language (RU/EN) — короткая локализация ===== */
+  let lang = 'ru';
+  const t = (ru,en)=> lang==='ru'?ru:en;
+  const L = {
+    title: [
+      'ByteBros — IT‑поддержка офисов, выезд и удалённо (Бишкек)',
+      'ByteBros — Office IT support, on‑site & remote (Bishkek)'
+    ],
+    heroH: ['IT‑поддержка в Бишкеке — выезд и удалённо','IT support in Bishkek — on‑site & remote'],
+    heroP: [
+      'We usually reply in 5 minutes; on‑site across Bishkek within 30 minutes. Windows/Office/apps, networks, backups, PC/laptop tuning.',
+      'We usually reply in 5 minutes; on‑site across Bishkek within 30 minutes. Windows/Office/apps, networks, backups, PC/laptop tuning.'
+    ], // EN text used for both when toggled to EN
+    services: ['Услуги','Services'],
+    calc: ['Калькулятор цены','Price calculator'],
+    how: ['Как мы работаем','How we work'],
+    why: ['Почему ByteBros','Why ByteBros'],
+    map: ['Где работаем','Service area'],
+    faq: ['FAQ — Частые вопросы','FAQ — Common questions'],
+    contacts: ['Контакты','Contacts'],
+    order: ['Заказать выезд','Book a visit'],
+    pricing: ['Посмотреть цены','See pricing'],
+    call: ['Позвонить','Call'],
+    cbLine: [
+      'Mon–Sat 9:00–19:00 · we usually reply in 5 minutes',
+      'Mon–Sat 9:00–19:00 · we usually reply in 5 minutes'
+    ],
+    whyFast: [
+      'Reply — ~5 min. On‑site — ~30 min (Bishkek).',
+      'Reply — ~5 min. On‑site — ~30 min (Bishkek).'
+    ],
+    step1: ['Message/call — we usually reply in 5 minutes.','Message/call — we usually reply in 5 minutes.'],
+    step3: ['On‑site across Bishkek within 30 minutes, or remote.','On‑site across Bishkek within 30 minutes, or remote.']
+  };
+  document.getElementById('langBtn').addEventListener('click',()=>{
+    lang = (lang==='ru') ? 'en' : 'ru';
+    applyLang();
+  });
+  function applyLang(){
+    document.title = t(...L.title);
+    document.getElementById('hero-title').textContent = t(...L.heroH);
+    // Lead: для RU оставляем русский SLA-текст из разметки, для EN ставим англ:
+    if(lang==='en'){ document.querySelector('.lead').textContent = L.heroP[1]; }
+    document.getElementById('services-title').textContent = t(...L.services);
+    document.getElementById('calc-title').textContent = t(...L.calc);
+    document.getElementById('how-title').textContent = t(...L.how);
+    document.getElementById('why-title').textContent = t(...L.why);
+    document.getElementById('map-title').textContent = t(...L.map);
+    document.getElementById('faq-title').textContent = t(...L.faq);
+    document.getElementById('contact-title').textContent = t(...L.contacts);
+    document.querySelector('.cta-row .btn.primary').textContent = t(...L.order);
+    document.querySelector('.cta-row .btn.secondary').textContent = t(...L.pricing);
+    // Callback small line
+    if(lang==='en'){ document.querySelector('#callback .muted').textContent = L.cbLine[1]; }
+    // Why fast (2-я карточка)
+    if(lang==='en'){ document.querySelectorAll('.badge .muted')[1].textContent = L.whyFast[1]; }
+    // Steps 1 & 3
+    if(lang==='en'){
+      document.querySelectorAll('.step .muted')[0].textContent = L.step1[1];
+      document.querySelectorAll('.step .muted')[2].textContent = L.step3[1];
+    }
+    document.getElementById('langBtn').textContent = lang==='ru'?'EN':'RU';
+  }
+
+  /* ===== Theme toggle (dark default) ===== */
+  const themeBtn = document.getElementById('themeBtn');
+  const savedTheme = localStorage.getItem('bb_theme');
+  if(savedTheme) document.body.setAttribute('data-theme', savedTheme);
+  themeBtn.addEventListener('click', ()=>{
+    const next = document.body.getAttribute('data-theme')==='light'?'dark':'light';
+    document.body.setAttribute('data-theme', next);
+    localStorage.setItem('bb_theme', next);
   });
 
-  // Theme toggle
-  document.getElementById('themeBtn').addEventListener('click', ()=>{
-    const b = document.body;
-    b.setAttribute('data-theme', b.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
-  });
-
-  // Contact links
-  const whatsappNumber = "996505231104"; // displayed as +996 505 231104
+  /* ===== Contact links ===== */
+  const whatsappNumber = "996505231104";
   const waHref = "https://wa.me/" + whatsappNumber;
   document.getElementById('whatsappLink').setAttribute('href', waHref);
   document.getElementById('fabWhatsapp').setAttribute('href', waHref);
+  const tgHref = "https://t.me/eralinx";
+  document.getElementById('telegramLink').setAttribute('href', tgHref);
+  document.getElementById('fabTelegram').setAttribute('href', tgHref);
 
-  const telegramHref = "https://t.me/eralinx";
-  document.getElementById('telegramLink').setAttribute('href', telegramHref);
-  document.getElementById('fabTelegram').setAttribute('href', telegramHref);
-
-  // Call popup logic
-  const callBtn = document.getElementById('callBtn');
-  const fabCall = document.getElementById('fabCall');
+  /* ===== Call popup ===== */
   const callPopup = document.getElementById('callPopup');
-  const callClose = document.getElementById('callClose');
-
-  function toggleCallPopup(show){
-    if(show){ callPopup.style.display = 'block'; callPopup.setAttribute('aria-hidden','false'); }
-    else { callPopup.style.display = 'none'; callPopup.setAttribute('aria-hidden','true'); }
-  }
-
-  fabCall.addEventListener('click', (e)=>{ e.preventDefault(); toggleCallPopup(true); });
-  callBtn.addEventListener('click', ()=> toggleCallPopup(true));
-  callClose.addEventListener('click', ()=> toggleCallPopup(false));
+  document.getElementById('fabCall').addEventListener('click', (e)=>{ e.preventDefault(); toggleCallPopup(true); });
+  document.getElementById('callClose').addEventListener('click', ()=> toggleCallPopup(false));
   document.addEventListener('click', (e)=>{
-    const inside = callPopup.contains(e.target) || fabCall.contains(e.target) || callBtn.contains(e.target);
+    const inside = callPopup.contains(e.target) || e.target.closest('#fabCall');
     if(!inside) toggleCallPopup(false);
   });
-  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') toggleCallPopup(false); });
-
-  // Calculator logic
-  const elems = {
-    c_win: document.getElementById('c_win'),
-    q_win: document.getElementById('q_win'),
-    c_off: document.getElementById('c_off'),
-    q_off: document.getElementById('q_off'),
-    c_mac: document.getElementById('c_mac'),
-    q_mac: document.getElementById('q_mac'),
-    c_fix: document.getElementById('c_fix'),
-    q_fix: document.getElementById('q_fix'),
-    c_hour: document.getElementById('c_hour'),
-    q_hour: document.getElementById('q_hour'),
-    c_visit: document.getElementById('c_visit'),
-    q_visit: document.getElementById('q_visit'),
-    totalAmount: document.getElementById('totalAmount'),
-    sendWhats: document.getElementById('sendWhats'),
-    sendTg: document.getElementById('sendTg')
-  };
-
-  function calcTotal(){
-    let total = 0;
-    if(elems.c_win.checked){ const n = Number(elems.q_win.value || 0); total += n * PRICES.win; }
-    if(elems.c_off.checked){ const n = Number(elems.q_off.value || 0); total += n * PRICES.office; }
-    if(elems.c_mac.checked){ const n = Number(elems.q_mac.value || 0); total += n * PRICES.mac; }
-    if(elems.c_fix.checked){ const n = Number(elems.q_fix.value || 0); total += n * PRICES.fix; }
-    if(elems.c_hour.checked){ const n = Number(elems.q_hour.value || 0); total += n * PRICES.hour; }
-    if(elems.c_visit.checked){ const n = Number(elems.q_visit.value || 0); total += n * PRICES.visit; }
-    elems.totalAmount.textContent = total.toLocaleString();
-    return total;
+  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') toggleCallPopup(false); });
+  function toggleCallPopup(show){
+    callPopup.style.display = show ? 'block' : 'none';
+    callPopup.setAttribute('aria-hidden', String(!show));
   }
 
-  // Recalculate on changes
-  Object.values(elems).forEach(el => {
-    if(!el) return;
-    el.addEventListener && el.addEventListener('input', calcTotal);
-    el.addEventListener && el.addEventListener('change', calcTotal);
+  /* ===== Calculator ===== */
+  const PRICES = { win:1200, office:500, mac:700, fix:300, hour:600, visit:500 };
+  const $ = id=>document.getElementById(id);
+  const refs = { c_win:$('c_win'), q_win:$('q_win'), c_off:$('c_off'), q_off:$('q_off'),
+                 c_mac:$('c_mac'), q_mac:$('q_mac'), c_fix:$('c_fix'), q_fix:$('q_fix'),
+                 c_hour:$('c_hour'), q_hour:$('q_hour'), c_visit:$('c_visit'), q_visit:$('q_visit'),
+                 totalAmount:$('totalAmount'), sendWhats:$('sendWhats'), sendTg:$('sendTg') };
+  function calcTotal(){
+    let t=0;
+    if(refs.c_win.checked)  t += (+refs.q_win.value||0)*PRICES.win;
+    if(refs.c_off.checked)  t += (+refs.q_off.value||0)*PRICES.office;
+    if(refs.c_mac.checked)  t += (+refs.q_mac.value||0)*PRICES.mac;
+    if(refs.c_fix.checked)  t += (+refs.q_fix.value||0)*PRICES.fix;
+    if(refs.c_hour.checked) t += (+refs.q_hour.value||0)*PRICES.hour;
+    if(refs.c_visit.checked)t += (+refs.q_visit.value||0)*PRICES.visit;
+    refs.totalAmount.textContent = t.toLocaleString();
+    return t;
+  }
+  ['input','change'].forEach(evt=>{
+    Object.values(refs).forEach(el=> el?.addEventListener?.(evt, calcTotal));
   });
-
-  // Initial calc
   calcTotal();
-
-  function buildMessage(){
-    const lines = [];
-    if(elems.c_win.checked) lines.push(`${translations[lang].calcWin}: ${elems.q_win.value} x ${PRICES.win} = ${ (Number(elems.q_win.value)*PRICES.win).toLocaleString() }`);
-    if(elems.c_off.checked) lines.push(`${translations[lang].calcOffice}: ${elems.q_off.value} x ${PRICES.office} = ${ (Number(elems.q_off.value)*PRICES.office).toLocaleString() }`);
-    if(elems.c_mac.checked) lines.push(`${translations[lang].calcMac}: ${elems.q_mac.value} x ${PRICES.mac} = ${ (Number(elems.q_mac.value)*PRICES.mac).toLocaleString() }`);
-    if(elems.c_fix.checked) lines.push(`${translations[lang].calcFix}: ${elems.q_fix.value} x ${PRICES.fix} = ${ (Number(elems.q_fix.value)*PRICES.fix).toLocaleString() }`);
-    if(elems.c_hour.checked) lines.push(`${translations[lang].calcHour}: ${elems.q_hour.value} x ${PRICES.hour} = ${ (Number(elems.q_hour.value)*PRICES.hour).toLocaleString() }`);
-    if(elems.c_visit.checked) lines.push(`${translations[lang].calcVisit}: ${elems.q_visit.value} x ${PRICES.visit} = ${ (Number(elems.q_visit.value)*PRICES.visit).toLocaleString() }`);
+  function buildCalcMessage(){
+    const lines=[];
+    if(refs.c_win.checked)  lines.push(`Windows: ${refs.q_win.value} x ${PRICES.win} = ${(refs.q_win.value*PRICES.win).toLocaleString()}`);
+    if(refs.c_off.checked)  lines.push(`Office/ПО: ${refs.q_off.value} x ${PRICES.office} = ${(refs.q_off.value*PRICES.office).toLocaleString()}`);
+    if(refs.c_mac.checked)  lines.push(`macOS: ${refs.q_mac.value} x ${PRICES.mac} = ${(refs.q_mac.value*PRICES.mac).toLocaleString()}`);
+    if(refs.c_fix.checked)  lines.push(`Фиксы: ${refs.q_fix.value} x ${PRICES.fix} = ${(refs.q_fix.value*PRICES.fix).toLocaleString()}`);
+    if(refs.c_hour.checked) lines.push(`Часы: ${refs.q_hour.value} x ${PRICES.hour} = ${(refs.q_hour.value*PRICES.hour).toLocaleString()}`);
+    if(refs.c_visit.checked)lines.push(`Выезд: ${refs.q_visit.value} x ${PRICES.visit} = ${(refs.q_visit.value*PRICES.visit).toLocaleString()}`);
     const total = calcTotal();
-    lines.push(`${lang === 'ru' ? 'Итог' : 'Total'}: ${total.toLocaleString()} KGS`);
-    lines.push('');
-    lines.push(lang === 'ru' ? 'Дополнительно: просьба указать удобное время и адрес.' : 'Additional: please provide preferred time and address.');
+    lines.push(`Итог: ${total.toLocaleString()} KGS\n`);
+    lines.push('Удобное время/адрес: ');
     return lines.join('\n');
   }
-
-  elems.sendWhats.addEventListener('click', ()=>{
-    const msg = encodeURIComponent(buildMessage());
-    const url = `https://wa.me/${whatsappNumber}?text=${msg}`;
-    window.open(url, '_blank');
+  refs.sendWhats.addEventListener('click', ()=>{
+    const msg = encodeURIComponent(buildCalcMessage());
+    window.open(`https://wa.me/${whatsappNumber}?text=${msg}`, '_blank');
+  });
+  refs.sendTg.addEventListener('click', ()=>{
+    const msg = encodeURIComponent(buildCalcMessage());
+    window.open(`https://t.me/eralinx?text=${msg}`, '_blank');
   });
 
-  elems.sendTg.addEventListener('click', ()=>{
-    const msg = encodeURIComponent(buildMessage());
-    // Telegram deep link to open chat with prefilled message (tg:// may not work on desktop)
-    const tgLink = `https://t.me/eralinx?text=${msg}`;
-    window.open(tgLink, '_blank');
+  /* ===== Callback form -> messenger ===== */
+  function buildCallbackMessage(){
+    const name = (document.getElementById('f_name').value||'').trim();
+    const phone = (document.getElementById('f_phone').value||'').trim();
+    const text = (document.getElementById('f_msg').value||'').trim();
+    return encodeURIComponent(
+      `Заявка с сайта ByteBros\nИмя: ${name || '-'}\nТелефон: ${phone || '-'}\nКомментарий: ${text || '-'}`
+    );
+  }
+  document.getElementById('cb_whats').addEventListener('click', ()=>{
+    window.open(`https://wa.me/${whatsappNumber}?text=${buildCallbackMessage()}`,'_blank');
+  });
+  document.getElementById('cb_tg').addEventListener('click', ()=>{
+    window.open(`https://t.me/eralinx?text=${buildCallbackMessage()}`,'_blank');
   });
 
-  // Keep contact button labels updated on language change (some labels set by data-i18n)
-  // Also update aria labels if necessary
-  const observer = new MutationObserver(()=>{ /* no-op placeholder if needed */ });
-  observer.observe(document.body, { childList:true, subtree:true });
-
+  // Init language switch button label
+  document.getElementById('langBtn').textContent = 'EN';
 </script>
 </body>
 </html>
