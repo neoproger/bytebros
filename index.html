@@ -1,583 +1,232 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Proton — IT‑поддержка офисов, выезд и удалённо (Бишкек)</title>
-  <meta name="description" content="ByteBros — выездная и удалённая IT‑поддержка в Бишкеке. Ответ за 5 минут, выезд в течение 30 минут. Установка Windows, Office и ПО; настройка сети; бесплатная диагностика." />
-  <meta name="color-scheme" content="dark light">
-  <meta name="theme-color" content="#0a6ddc">
-
-  <style>
-    /* =============== TOKENS (Minimal Mono) =============== */
-    :root{
-      --accent:#0a6ddc;
-      --bg:#0b1220;
-      --text:#e6eef8;
-      --muted:#a0aec0;
-      --surface:#101827;
-      --stroke: 0 0% 100% / .10;
-      --radius:12px;
-      --shadow: 0 10px 28px rgba(0,0,0,.45);
-      --container: 1100px;
-      --pad: clamp(16px,3vw,28px);
-      --gap: clamp(10px,2.2vw,20px);
-      --fs-1: clamp(28px, 2.4vw + 14px, 44px);
-      --fs-2: clamp(18px, 1vw + 14px, 24px);
-      --fs-0: 16px;
-      --fab: 56px;
-      --bar-h: 56px;
-    }
-    /* Light mode variables (for toggle) */
-    [data-theme="light"]{
-      --bg:#ffffff;
-      --text:#0f172a;
-      --muted:#667085;
-      --surface:#f8fafc;
-      --stroke: 224 12% 18% / .10;
-      --shadow: 0 10px 28px rgba(2,6,23,.06);
-    }
-
-    /* =============== BASE =============== */
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; font-family: Inter, ui-sans-serif, system-ui, -apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
-      background:var(--bg); color:var(--text); line-height:1.55; -webkit-font-smoothing:antialiased; font-size:var(--fs-0);
-    }
-    a{color:inherit; text-decoration:none}
-    img,svg{display:block; max-width:100%}
-    .container{max-width:var(--container); margin:0 auto; padding:var(--pad)}
-    .stack{display:flex; flex-direction:column; gap:var(--gap)}
-    .muted{color:var(--muted)}
-
-    /* =============== HEADER =============== */
-    header{display:flex; align-items:center; justify-content:space-between; gap:12px}
-    .brand{display:flex; align-items:center; gap:12px}
-    .logo{width:44px; height:44px; border-radius:12px; object-fit:contain}
-    .brand-title{font-weight:800}
-    .brand-sub{font-size:12px; color:var(--muted)}
-    nav{display:flex; gap:14px}
-    nav a{color:var(--muted); font-weight:600; padding:6px 8px; border-radius:8px}
-    .controls{display:flex; gap:8px; align-items:center}
-    .chip{
-      appearance:none; border:1px solid hsl(var(--stroke)); background:transparent; color:inherit;
-      padding:8px 10px; border-radius:12px; font-weight:600; cursor:pointer
-    }
-    .chip:focus-visible{outline:0; box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent)}
-
-    /* =============== MOBILE TOP BAR (sticky) =============== */
-    .topbar{
-      position:sticky; top:0; z-index:1200; display:none; height:var(--bar-h);
-      background: var(--surface);
-      border-bottom:1px solid hsl(var(--stroke));
-    }
-    .topbar-inner{
-      max-width:var(--container); margin:0 auto; padding:0 12px; height:100%;
-      display:flex; align-items:center; justify-content:space-between; gap:8px;
-    }
-    .topbar .btn{height:38px; padding:0 12px}
-    .topbar .phone{font-weight:800}
-
-    /* =============== HERO =============== */
-    .hero{display:grid; grid-template-columns:1.35fr 1fr; gap:clamp(16px,3vw,28px); align-items:start; margin-top:8px}
-    .kicker{display:inline-flex; gap:8px; align-items:center; font-weight:700; color:var(--accent);
-      background:color-mix(in srgb, var(--accent) 18%, transparent); padding:6px 10px; border-radius:999px; width:max-content}
-    h1{font-size:var(--fs-1); line-height:1.12; margin:8px 0 10px}
-    .lead{font-size:var(--fs-2); color:var(--muted); margin:0 0 8px}
-    .cta-row{display:flex; gap:8px; flex-wrap:wrap}
-
-    .card{background:var(--surface); border:1px solid hsl(var(--stroke)); border-radius:var(--radius); padding:clamp(14px,2.4vw,18px); box-shadow:var(--shadow)}
-    .pill{padding:6px 10px; border-radius:999px; background:color-mix(in srgb, var(--accent) 18%, transparent); color:var(--accent); font-weight:700}
-
-    .btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:10px 14px; border-radius:12px; font-weight:700; border:1px solid transparent; cursor:pointer}
-    .btn.primary{background:var(--accent); color:#fff}
-    .btn.secondary{background:transparent; color:var(--accent); border-color:color-mix(in srgb, var(--accent) 55%, transparent)}
-
-    /* =============== SECTIONS =============== */
-    .services{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px}
-    .service{border:1px solid hsl(var(--stroke)); border-radius:12px; padding:14px; display:grid; gap:6px}
-
-    .steps{display:grid; grid-template-columns:repeat(3,1fr); gap:10px}
-    .step{border:1px solid hsl(var(--stroke)); border-radius:12px; padding:14px}
-
-    .badges{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px}
-    .badge{border:1px solid hsl(var(--stroke)); border-radius:12px; padding:14px; display:grid; gap:6px}
-
-    .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:12px}
-    .list{margin:8px 0 0 18px}
-
-    /* =============== FORM =============== */
-    .form{display:grid; gap:8px}
-    .form .row{display:grid; grid-template-columns:1fr 1fr; gap:8px}
-    input, textarea{
-      width:100%; padding:10px 12px; border-radius:12px; border:1px solid hsl(var(--stroke));
-      background:transparent; color:inherit; font:inherit
-    }
-
-    /* =============== MAP TABS =============== */
-    .tabs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px}
-    .tab{padding:8px 12px; border:1px solid hsl(var(--stroke)); border-radius:999px; cursor:pointer; font-weight:700; background:transparent}
-    .tab.active{background:var(--accent); color:#fff; border-color:transparent}
-    .mapframe{width:100%; aspect-ratio: 16 / 10; border:1px solid hsl(var(--stroke)); border-radius:12px; overflow:hidden}
-    .mapframe iframe{width:100%; height:100%; border:0}
-
-    /* =============== FOOTER =============== */
-    footer{margin-top:28px; padding-top:18px; color:var(--muted); border-top:1px solid hsl(var(--stroke)); font-size:14px}
-
-    /* =============== FABs =============== */
-    .fixed-fab{position:fixed; right:16px; bottom:16px; display:flex; flex-direction:column; gap:10px; align-items:flex-end; z-index:1100}
-    .fab{width:var(--fab); height:var(--fab); border-radius:999px; display:grid; place-items:center; color:#fff; text-decoration:none; font-weight:800; box-shadow:0 10px 24px rgba(0,0,0,.45)}
-    .whatsapp{background:#25D366} .telegram{background:#2A8AE5} .call{background:var(--accent)}
-    .call-popup{position:fixed; right:calc(16px + var(--fab) + 10px); bottom:16px; background:var(--surface); padding:12px; border-radius:12px; border:1px solid hsl(var(--stroke)); box-shadow:var(--shadow); display:none; z-index:1300; width:240px}
-    .call-popup .label{font-size:12px; color:var(--muted); margin-bottom:6px}
-    .call-popup a{display:block; padding:8px; border-radius:12px; border:1px solid hsl(var(--stroke)); margin-bottom:6px; color:inherit}
-
-    /* =============== RESPONSIVE =============== */
-    @media (max-width:980px){
-      nav{display:none}
-      .hero{grid-template-columns:1fr}
-      .grid-2{grid-template-columns:1fr}
-      .steps{grid-template-columns:1fr}
-      .topbar{display:block}
-      body{scroll-padding-top:var(--bar-h)}
-    }
-    @media (max-width:520px){
-      .form .row{grid-template-columns:1fr}
-    }
-    @media (prefers-reduced-motion:no-preference){
-      .btn,.fab{transition:transform .2s ease}
-      .btn:hover{transform:translateY(-1px)}
-      .fab:hover{transform:translateY(-2px)}
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proton.kg — Сервисный центр ПК и ноутбуков в Бишкеке</title>
+  <meta name="description" content="Ремонт ПК и ноутбуков, установка Windows/Office/Adobe, настройка принтеров, офисные сети. Калькулятор цены и заявка в WhatsApp/Telegram." />
+  <meta name="theme-color" content="#0b0f17" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 
-<!-- Dark theme by default -->
-<body data-theme="dark">
-  <!-- Mobile sticky top bar -->
-  <div class="topbar" aria-hidden="true">
-    <div class="topbar-inner">
-      <div class="phone"><a href="tel:+996505231104">+996 505 231104</a></div>
-      <div style="display:flex; gap:8px">
-        <a href="#contact" class="btn secondary">Заказать</a>
-        <a href="tel:+996505231104" class="btn primary">Позвонить</a>
+<body>
+    
+    <canvas id="snow" aria-hidden="true"></canvas>
+
+  <header class="header">
+    <div class="container header__row">
+      <a class="logo" href="#top">Proton<span>.kg</span></a>
+
+      <nav class="nav" id="nav">
+        <a href="#services">Услуги</a>
+        <a href="#prices">Цены</a>
+        <a href="#calc">Калькулятор</a>
+        <a href="#contact">Контакты</a>
+      </nav>
+
+      <div class="header__actions">
+        <a class="chip" href="#calc" title="Сделать расчёт">🧮 Рассчитать</a>
+        <button class="burger" id="burger" aria-label="Меню" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
       </div>
     </div>
-  </div>
+  </header>
 
-  <div class="container stack">
-    <!-- Header -->
-    <header>
-      <div class="brand">
-        <img class="logo" src="FullLogo.png" alt="ByteBros logo" decoding="async">
+  <main id="top">
+    <section class="hero">
+      <div class="container hero__grid">
         <div>
-          <div class="brand-title">Proton.kg</div>
-          <div class="brand-sub">Техническая поддержка офисов и установка ПО</div>
-        </div>
-      </div>
-      <div class="controls">
-        <nav aria-label="Primary">
-          <a href="#services">Услуги</a>
-          <a href="#how">Как работаем</a>
-          <a href="#map">Карта</a>
-          <a href="#faq">FAQ</a>
-          <a href="#contact">Контакты</a>
-        </nav>
-        <button class="chip" id="langBtn" aria-label="Language">EN</button>
-        <button class="chip" id="themeBtn" aria-label="Theme">Тема</button>
-      </div>
-    </header>
+          <h1>Proton.kg — ремонт и настройка ПК/ноутбуков</h1>
+          <p class="muted">
+            Установка Windows/Office/Adobe, драйверы принтеров (включая Xprinter),
+            чистка и термопаста, сборка ПК, офисные общие доступы.
+          </p>
 
-    <!-- Hero -->
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="stack">
-        <span class="kicker">Бесплатная диагностика</span>
-        <h1 id="hero-title">IT‑поддержка в Бишкеке — выезд и удалённо</h1>
-        <p class="lead">
-          Отвечаем обычно за <strong>5 минут</strong>, выезд по Бишкеку — в течение <strong>30 минут</strong>.
-          Windows/Office/ПО, сети, резервные копии, ускорение ПК и ноутбуков.
-        </p>
-        <div class="cta-row">
-          <a class="btn primary" href="#contact">Заказать выезд</a>
-          <a class="btn secondary" href="#pricing">Посмотреть цены</a>
-          <span class="btn secondary">Тел.: <a href="tel:+996505231104" style="color:inherit">+996 505 231104</a></span>
+          <div class="hero__actions">
+            <a class="btn" href="#calc">Рассчитать и отправить заявку</a>
+            <a class="btn btn--ghost" href="#prices">Смотреть прайс</a>
+          </div>
+
+          <div class="badges">
+            <span class="badge">Бишкек: выезд+диагностика 500</span>
+            <span class="badge">Загород: 1000</span>
+            <span class="badge">Чёткий прайс</span>
+          </div>
         </div>
 
-        <!-- Mini‑pricing -->
-        <div id="pricing" class="card">
-          <strong>Цены (примерно)</strong>
-          <div class="grid-2">
-            <div>
-              <ul class="list">
-                <li>Установка Windows — от 1200 с (выезд включён)</li>
-                <li>Office/платные программы — от 500 с</li>
-                <li>macOS — платные приложения — от 700 с</li>
-              </ul>
+        <div class="card preview">
+          <div class="preview__head">
+            <div class="preview__dots"><span></span><span></span><span></span></div>
+            <div class="preview__title">Заявка → WhatsApp / Telegram</div>
+          </div>
+          <div class="preview__body">
+            <div class="preview__line big"></div>
+            <div class="preview__line"></div>
+            <div class="preview__line"></div>
+            <div class="preview__line w"></div>
+            <a class="btn btn--small" href="#calc">Открыть калькулятор</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="services">
+      <div class="container">
+        <h2>Что делаем</h2>
+        <p class="muted">Сервисный центр: дома и офисы.</p>
+
+        <div class="grid3">
+          <article class="card feature">
+            <h3>Ремонт и ускорение</h3>
+            <p class="muted">Диагностика, устранение тормозов, настройка системы.</p>
+          </article>
+          <article class="card feature">
+            <h3>ПО и драйверы</h3>
+            <p class="muted">Windows, Office, Adobe, принтеры, базовая настройка.</p>
+          </article>
+          <article class="card feature">
+            <h3>Офисная сеть</h3>
+            <p class="muted">Общий доступ, сетевые принтеры, рабочие места.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="prices">
+      <div class="container">
+        <h2>Цены</h2>
+        <p class="muted">Ниже — прайс и калькулятор. Можно выбрать несколько услуг.</p>
+
+        <div class="card tablecard">
+          <div class="table">
+            <div class="table__row table__head">
+              <div>Услуга</div>
+              <div class="right">Цена</div>
             </div>
-            <div>
-              <ul class="list">
-                <li>Небольшие исправления — от 300 с</li>
-                <li>Почасовая поддержка — 600 с/час</li>
-                <li>Выезд по Бишкеку — 500 с</li>
-              </ul>
+
+            <div class="table__row"><div>Выезд и диагностика по городу Бишкек</div><div class="right"><b>500</b> сом</div></div>
+            <div class="table__row"><div>Выезд и диагностика загород</div><div class="right"><b>1000</b> сом</div></div>
+            <div class="table__row"><div>Установка Windows со всеми драйверами и Office</div><div class="right"><b>1300</b> сом</div></div>
+            <div class="table__row"><div>Установка и активация Office (Word, Excel)</div><div class="right"><b>500</b> сом</div></div>
+            <div class="table__row"><div>Установка и настройка драйверов принтера</div><div class="right"><b>500</b> сом</div></div>
+            <div class="table__row"><div>Установка и настройка драйверов принтера Xprinter</div><div class="right"><b>800</b> сом</div></div>
+            <div class="table__row"><div>Установка программ (например Adobe)</div><div class="right"><b>500</b> сом</div></div>
+            <div class="table__row"><div>Установка Office и Adobe с лицензией на macOS</div><div class="right"><b>800</b> сом</div></div>
+            <div class="table__row"><div>Очистка и замена термопасты (ПК)</div><div class="right"><b>800</b> сом</div></div>
+            <div class="table__row"><div>Очистка и замена термопасты (Ноутбук)</div><div class="right"><b>1200</b> сом</div></div>
+            <div class="table__row"><div>Сборка компьютера с готовыми комплектующими</div><div class="right"><b>1000</b> сом</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- КАЛЬКУЛЯТОР -->
+    <section class="section" id="calc">
+      <div class="container">
+        <h2>Калькулятор заявки</h2>
+        <p class="muted">Выбери услуги, укажи адрес и удобное время — затем отправь в WhatsApp или Telegram.</p>
+
+        <div class="grid2">
+          <div class="card calc">
+            <div class="calc__top">
+              <div class="muted">Выберите услуги</div>
+              <button class="chip chip--ghost" id="clearAll" type="button">Очистить</button>
+            </div>
+
+            <div class="calc__list" id="serviceList">
+              <!-- чекбоксы генерируются JS -->
+            </div>
+
+            <div class="calc__sum">
+              <div class="muted">Итого</div>
+              <div class="sum"><span id="total">0</span> сом</div>
             </div>
           </div>
-          <div class="muted">Итоговая смета — после диагностики.</div>
-        </div>
-      </div>
 
-      <!-- Callback form -->
-      <aside class="card" aria-labelledby="cb-title" id="callback">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
-          <div>
-            <div id="cb-title" style="font-weight:800">Оставьте номер — перезвоним</div>
-            <div class="muted">Пн–Сб 9:00–19:00 · обычно отвечаем за <strong>5 минут</strong></div>
+          <div class="card formcard">
+            <form id="orderForm" novalidate>
+              <div class="row">
+                <label>
+                  Имя
+                  <input name="name" type="text" placeholder="Ваше имя" minlength="2" required />
+                  <small class="err" data-err="name"></small>
+                </label>
+
+                <label>
+                  Телефон
+                  <input name="phone" type="tel" placeholder="+996 ..." required />
+                  <small class="err" data-err="phone"></small>
+                </label>
+              </div>
+
+              <label>
+                Адрес
+                <input name="address" type="text" placeholder="Бишкек, улица..., дом..." required />
+                <small class="err" data-err="address"></small>
+              </label>
+
+              <div class="row">
+                <label>
+                  Удобная дата
+                  <input name="date" type="date" required />
+                  <small class="err" data-err="date"></small>
+                </label>
+
+                <label>
+                  Удобное время
+                  <input name="time" type="time" required />
+                  <small class="err" data-err="time"></small>
+                </label>
+              </div>
+
+              <label>
+                Комментарий (необязательно)
+                <textarea name="comment" rows="4" placeholder="Модель ноутбука/ПК, что случилось, что нужно установить..."></textarea>
+              </label>
+
+              <div class="form__actions">
+                <button class="btn" type="button" id="sendWA">Отправить в WhatsApp</button>
+                <button class="btn btn--ghost" type="button" id="sendTG">Отправить в Telegram</button>
+              </div>
+
+              <p class="muted" id="orderStatus" aria-live="polite"></p>
+
+              <p class="muted tiny">
+                Нажимая кнопку "Отправить", вы соглашаетесь с обработкой персональных данных.
+              </p>
+            </form>
           </div>
-          <span class="pill">Скидка −10% на первый вызов если ремонт свыше 2000сомов</span>
         </div>
-        <div class="form" style="margin-top:8px">
-          <div class="row">
-            <input id="f_name" placeholder="Как к вам обращаться">
-            <input id="f_phone" placeholder="Телефон">
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="container">
+        <h2>Контакты</h2>
+        <p class="muted">Если удобнее — напиши напрямую.</p>
+
+        <div class="card contactcard">
+          <div class="contactcard__row">
+            <div class="contactcard__k muted">WhatsApp</div>
+            <div class="contactcard__v">wa.me/996505231104</div>
           </div>
-          <textarea id="f_msg" rows="3" placeholder="Коротко опишите проблему (необязательно)"></textarea>
-          <div class="cta-row">
-            <button id="cb_whats" class="btn primary">Отправить в WhatsApp</button>
-            <button id="cb_tg" class="btn secondary">Отправить в Telegram</button>
+          <div class="contactcard__row">
+            <div class="contactcard__k muted">Telegram</div>
+            <div class="contactcard__v">@erlnbk</div>
           </div>
-          <div class="muted">Нажимая, вы перейдёте в мессенджер с подготовленным текстом.</div>
         </div>
-      </aside>
-    </section>
-
-    <!-- Services -->
-    <section id="services" class="stack" aria-labelledby="services-title">
-      <h2 id="services-title" style="margin:0">Услуги</h2>
-      <div class="services">
-        <div class="service"><strong>Ремонт/обслуживание ПК</strong><div class="muted">Диагностика, чистка, апгрейд, драйверы, ускорение.</div></div>
-        <div class="service"><strong>Ноутбуки</strong><div class="muted">Охлаждение, замена SSD/HDD, клавиатуры, батареи.</div></div>
-        <div class="service"><strong>Принтеры и МФУ</strong><div class="muted">Драйверы, сеть, расходники, удалённая печать.</div></div>
-        <div class="service"><strong>Сеть и интернет</strong><div class="muted">Wi‑Fi, VPN, роутеры, IP‑адреса, резервирование каналов.</div></div>
-        <div class="service"><strong>Установка ОС</strong><div class="muted">Windows/macOS/Linux, восстановление, активация.</div></div>
-        <div class="service"><strong>ПО и лицензии</strong><div class="muted">Office, Photoshop/Illustrator, бухучёт и др.</div></div>
       </div>
     </section>
+  </main>
 
-    <!-- Calculator -->
-    <section class="card" aria-labelledby="calc-title">
-      <h2 id="calc-title" style="margin:0">Калькулятор цены</h2>
-      <div class="stack" style="margin-top:6px">
-        <div style="display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center">
-          <label><input type="checkbox" id="c_win" checked> Установка Windows</label>
-          <span><input type="number" id="q_win" min="0" value="1" style="width:100px"> шт.</span>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center">
-          <label><input type="checkbox" id="c_off"> Office / платные программы</label>
-          <span><input type="number" id="q_off" min="0" value="0" style="width:100px"> шт.</span>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center">
-          <label><input type="checkbox" id="c_mac"> Платные приложения на macOS</label>
-          <span><input type="number" id="q_mac" min="0" value="0" style="width:100px"> шт.</span>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center">
-          <label><input type="checkbox" id="c_fix"> Небольшие исправления (фикс)</label>
-          <span><input type="number" id="q_fix" min="0" value="0" style="width:100px"> шт.</span>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center">
-          <label><input type="checkbox" id="c_hour"> Почасовая поддержка</label>
-          <span><input type="number" id="q_hour" min="0" value="0" style="width:100px"> ч.</span>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center">
-          <label><input type="checkbox" id="c_visit"> Выезд по Бишкеку (фикс)</label>
-          <span><input type="number" id="q_visit" min="0" value="1" style="width:100px"></span>
-        </div>
+  <footer class="footer">
+    <div class="container footer__row">
+      <span class="muted">© <span id="year"></span> Proton.kg</span>
+      <a class="muted" href="#top">Наверх ↑</a>
+    </div>
+  </footer>
 
-        <div class="pill" id="totalBox">Итог: <span id="totalAmount">0</span> KGS</div>
-
-        <div class="cta-row">
-          <button id="sendWhats" class="btn primary">Отправить в WhatsApp</button>
-          <button id="sendTg" class="btn secondary">Отправить в Telegram</button>
-        </div>
-        <div class="muted">После отправки мы свяжемся для подтверждения выезда.</div>
-      </div>
-    </section>
-
-    <!-- How we work -->
-    <section id="how" class="stack" aria-labelledby="how-title">
-      <h2 id="how-title" style="margin:0">Как мы работаем</h2>
-      <div class="steps">
-        <div class="step"><strong>1. Заявка</strong><div class="muted">Пишите/звоните — отвечаем обычно за <strong>5 минут</strong>.</div></div>
-        <div class="step"><strong>2. Диагностика</strong><div class="muted">Бесплатно. Смета и сроки до начала работ.</div></div>
-        <div class="step"><strong>3. Решение</strong><div class="muted">Выезд по Бишкеку — в течение <strong>30 минут</strong> или удалённо.</div></div>
-      </div>
-    </section>
-
-    <!-- Why us -->
-    <section class="stack" aria-labelledby="why-title">
-      <h2 id="why-title" style="margin:0">Почему ByteBros</h2>
-      <div class="badges">
-        <div class="badge"><strong>Опытные мастера</strong><div class="muted">Скорость и аккуратность — приоритет.</div></div>
-        <div class="badge"><strong>Быстрая реакция</strong><div class="muted">Ответ — ~5 минут. Выезд — ~30 минут (по Бишкеку).</div></div>
-        <div class="badge"><strong>Честные цены</strong><div class="muted">Без скрытых работ. Итог после диагностики.</div></div>
-        <div class="badge"><strong>Для офисов</strong><div class="muted">Абонентское обслуживание и почасовые работы.</div></div>
-      </div>
-    </section>
-
-    <!-- MAP -->
-    <section id="map" class="card" aria-labelledby="map-title">
-      <h2 id="map-title" style="margin:0">Где работаем</h2>
-      <div class="muted">Бишкек и ближайшие районы. Выезд — в пределах города.</div>
-      <div class="tabs" role="tablist" aria-label="Map tabs">
-        <button class="tab active" role="tab" aria-selected="true" aria-controls="map2gis" id="tab2gis">2GIS</button>
-        <button class="tab" role="tab" aria-selected="false" aria-controls="mapgmaps" id="tabgmaps">Google</button>
-      </div>
-      <div class="mapframe">
-        <iframe id="map2gis" title="2GIS Bishkek" src="https://2gis.kg/bishkek" loading="lazy"></iframe>
-        <iframe id="mapgmaps" title="Google Maps Bishkek" src="https://www.google.com/maps?q=Bishkek&output=embed" loading="lazy" hidden></iframe>
-      </div>
-      <div class="muted" style="margin-top:6px">Примечание: карты загружаются с внешних сервисов и могут устанавливать свои cookie.</div>
-    </section>
-
-    <!-- FAQ -->
-    <section id="faq" class="card" aria-labelledby="faq-title">
-      <h2 id="faq-title" style="margin:0">FAQ — Частые вопросы</h2>
-      <div class="faq" style="display:grid; gap:8px; margin-top:6px">
-        <details>
-          <summary style="cursor:pointer; font-weight:700">Сколько времени занимает установка Windows?</summary>
-          <p>Обычно 1–2 часа, включая драйверы и базовую настройку. Если нужен перенос данных — дольше.</p>
-        </details>
-        <details>
-          <summary style="cursor:pointer; font-weight:700">Вы работаете с лицензиями?</summary>
-          <p>Да, помогаем приобрести и корректно активировать лицензии Windows/Office и другого ПО.</p>
-        </details>
-        <details>
-          <summary style="cursor:pointer; font-weight:700">Можно удалённо решить проблему?</summary>
-          <p>Во многих случаях — да (ПО, драйверы, настройки). Если нужна физическая замена — приедем.</p>
-        </details>
-        <details>
-          <summary style="cursor:pointer; font-weight:700">Есть ли гарантия?</summary>
-          <p>Да, на выполненные работы предоставляем гарантию. Сроки — по типу работ.</p>
-        </details>
-      </div>
-    </section>
-
-    <!-- Contacts -->
-    <section id="contact" class="card" aria-labelledby="contact-title" style="scroll-margin-top:16px">
-      <h2 id="contact-title" style="margin:0">Контакты</h2>
-      <div class="stack" style="margin-top:6px">
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <a id="whatsappLink" class="btn primary" href="https://wa.me/996505231104" target="_blank" rel="noopener">WhatsApp</a>
-          <a id="telegramLink" class="btn secondary" href="https://t.me/eralinx" target="_blank" rel="noopener">Telegram</a>
-          <a class="btn secondary" href="tel:+996505231104">Позвонить: +996 505 231104</a>
-        </div>
-        <div class="muted">Работаем Пн–Сб 9:00–19:00 — Бишкек</div>
-        <div class="muted">Доп. номер: <a href="tel:+996999231104">+996 999 231104</a></div>
-      </div>
-    </section>
-
-    <footer>
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
-        <div style="font-weight:800">Proton.kg</div>
-        <div>© <Proton class="kg"></Proton> — Профессиональная IT‑поддержка</div>
-        <div style="display:flex;gap:12px">
-          <a href="#contact">Контакты</a>
-          <a href="#services" class="muted">Услуги</a>
-        </div>
-      </div>
-    </footer>
-  </div>
-
-  <!-- FABs -->
-  <div class="fixed-fab" aria-hidden="true">
-    <a id="fabWhatsapp" class="fab whatsapp" href="https://wa.me/996505231104" target="_blank" rel="noopener" title="WhatsApp" aria-label="WhatsApp">WA</a>
-    <a id="fabTelegram" class="fab telegram" href="https://t.me/eralinx" target="_blank" rel="noopener" title="Telegram" aria-label="Telegram">TG</a>
-    <a id="fabCall" class="fab call" href="#" title="Позвонить" role="button" aria-haspopup="dialog" aria-controls="callPopup">☎</a>
-  </div>
-
-  <!-- Call popup -->
-  <div id="callPopup" class="call-popup" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="callLabel">
-    <div id="callLabel" class="label">Выберите номер для звонка</div>
-    <a href="tel:+996505231104">+996 505 231104</a>
-    <a href="tel:+996999231104">+996 999 231104</a>
-    <button id="callClose" class="chip" style="width:100%; text-align:center">✕</button>
-  </div>
-
-  <!-- Schema.org -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "name": "ByteBros",
-    "image": "logo.PNG",
-    "address": { "@type": "PostalAddress", "addressLocality": "Bishkek", "addressCountry": "KG" },
-    "telephone": ["+996505231104","+996999231104"],
-    "areaServed": "Bishkek",
-    "openingHours": "Mo-Sa 09:00-19:00",
-    "sameAs": ["https://wa.me/996505231104","https://t.me/eralinx"]
-  }
-  </script>
-
-<script>
-  /* ===== Language (RU/EN) — короткая локализация ===== */
-  let lang = 'ru';
-  const t = (ru,en)=> lang==='ru'?ru:en;
-  const L = {
-    title: [
-      'Proton.kg — IT‑поддержка офисов, выезд и удалённо (Бишкек)',
-      'Proton.kg — Office IT support, on‑site & remote (Bishkek)'
-    ],
-    heroH: ['IT‑поддержка в Бишкеке — выезд и удалённо','IT support in Bishkek — on‑site & remote'],
-    heroP: [
-      'We usually reply in 5 minutes; on‑site across Bishkek within 30 minutes. Windows/Office/apps, networks, backups, PC/laptop tuning.',
-      'We usually reply in 5 minutes; on‑site across Bishkek within 30 minutes. Windows/Office/apps, networks, backups, PC/laptop tuning.'
-    ], // EN text used for both when toggled to EN
-    services: ['Услуги','Services'],
-    calc: ['Калькулятор цены','Price calculator'],
-    how: ['Как мы работаем','How we work'],
-    why: ['Почему Proton.kg','Why Proton.kg'],
-    map: ['Где работаем','Service area'],
-    faq: ['FAQ — Частые вопросы','FAQ — Common questions'],
-    contacts: ['Контакты','Contacts'],
-    order: ['Заказать выезд','Book a visit'],
-    pricing: ['Посмотреть цены','See pricing'],
-    call: ['Позвонить','Call'],
-    cbLine: [
-      'Mon–Sat 9:00–19:00 · we usually reply in 5 minutes',
-      'Mon–Sat 9:00–19:00 · we usually reply in 5 minutes'
-    ],
-    whyFast: [
-      'Reply — ~5 min. On‑site — ~30 min (Bishkek).',
-      'Reply — ~5 min. On‑site — ~30 min (Bishkek).'
-    ],
-    step1: ['Message/call — we usually reply in 5 minutes.','Message/call — we usually reply in 5 minutes.'],
-    step3: ['On‑site across Bishkek within 30 minutes, or remote.','On‑site across Bishkek within 30 minutes, or remote.']
-  };
-  document.getElementById('langBtn').addEventListener('click',()=>{
-    lang = (lang==='ru') ? 'en' : 'ru';
-    applyLang();
-  });
-  function applyLang(){
-    document.title = t(...L.title);
-    document.getElementById('hero-title').textContent = t(...L.heroH);
-    // Lead: для RU оставляем русский SLA-текст из разметки, для EN ставим англ:
-    if(lang==='en'){ document.querySelector('.lead').textContent = L.heroP[1]; }
-    document.getElementById('services-title').textContent = t(...L.services);
-    document.getElementById('calc-title').textContent = t(...L.calc);
-    document.getElementById('how-title').textContent = t(...L.how);
-    document.getElementById('why-title').textContent = t(...L.why);
-    document.getElementById('map-title').textContent = t(...L.map);
-    document.getElementById('faq-title').textContent = t(...L.faq);
-    document.getElementById('contact-title').textContent = t(...L.contacts);
-    document.querySelector('.cta-row .btn.primary').textContent = t(...L.order);
-    document.querySelector('.cta-row .btn.secondary').textContent = t(...L.pricing);
-    // Callback small line
-    if(lang==='en'){ document.querySelector('#callback .muted').textContent = L.cbLine[1]; }
-    // Why fast (2-я карточка)
-    if(lang==='en'){ document.querySelectorAll('.badge .muted')[1].textContent = L.whyFast[1]; }
-    // Steps 1 & 3
-    if(lang==='en'){
-      document.querySelectorAll('.step .muted')[0].textContent = L.step1[1];
-      document.querySelectorAll('.step .muted')[2].textContent = L.step3[1];
-    }
-    document.getElementById('langBtn').textContent = lang==='ru'?'EN':'RU';
-  }
-
-  /* ===== Theme toggle (dark default) ===== */
-  const themeBtn = document.getElementById('themeBtn');
-  const savedTheme = localStorage.getItem('bb_theme');
-  if(savedTheme) document.body.setAttribute('data-theme', savedTheme);
-  themeBtn.addEventListener('click', ()=>{
-    const next = document.body.getAttribute('data-theme')==='light'?'dark':'light';
-    document.body.setAttribute('data-theme', next);
-    localStorage.setItem('bb_theme', next);
-  });
-
-  /* ===== Contact links ===== */
-  const whatsappNumber = "996505231104";
-  const waHref = "https://wa.me/" + whatsappNumber;
-  document.getElementById('whatsappLink').setAttribute('href', waHref);
-  document.getElementById('fabWhatsapp').setAttribute('href', waHref);
-  const tgHref = "https://t.me/eralinx";
-  document.getElementById('telegramLink').setAttribute('href', tgHref);
-  document.getElementById('fabTelegram').setAttribute('href', tgHref);
-
-  /* ===== Call popup ===== */
-  const callPopup = document.getElementById('callPopup');
-  document.getElementById('fabCall').addEventListener('click', (e)=>{ e.preventDefault(); toggleCallPopup(true); });
-  document.getElementById('callClose').addEventListener('click', ()=> toggleCallPopup(false));
-  document.addEventListener('click', (e)=>{
-    const inside = callPopup.contains(e.target) || e.target.closest('#fabCall');
-    if(!inside) toggleCallPopup(false);
-  });
-  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') toggleCallPopup(false); });
-  function toggleCallPopup(show){
-    callPopup.style.display = show ? 'block' : 'none';
-    callPopup.setAttribute('aria-hidden', String(!show));
-  }
-
-  /* ===== Calculator ===== */
-  const PRICES = { win:1200, office:500, mac:700, fix:300, hour:600, visit:500 };
-  const $ = id=>document.getElementById(id);
-  const refs = { c_win:$('c_win'), q_win:$('q_win'), c_off:$('c_off'), q_off:$('q_off'),
-                 c_mac:$('c_mac'), q_mac:$('q_mac'), c_fix:$('c_fix'), q_fix:$('q_fix'),
-                 c_hour:$('c_hour'), q_hour:$('q_hour'), c_visit:$('c_visit'), q_visit:$('q_visit'),
-                 totalAmount:$('totalAmount'), sendWhats:$('sendWhats'), sendTg:$('sendTg') };
-  function calcTotal(){
-    let t=0;
-    if(refs.c_win.checked)  t += (+refs.q_win.value||0)*PRICES.win;
-    if(refs.c_off.checked)  t += (+refs.q_off.value||0)*PRICES.office;
-    if(refs.c_mac.checked)  t += (+refs.q_mac.value||0)*PRICES.mac;
-    if(refs.c_fix.checked)  t += (+refs.q_fix.value||0)*PRICES.fix;
-    if(refs.c_hour.checked) t += (+refs.q_hour.value||0)*PRICES.hour;
-    if(refs.c_visit.checked)t += (+refs.q_visit.value||0)*PRICES.visit;
-    refs.totalAmount.textContent = t.toLocaleString();
-    return t;
-  }
-  ['input','change'].forEach(evt=>{
-    Object.values(refs).forEach(el=> el?.addEventListener?.(evt, calcTotal));
-  });
-  calcTotal();
-  function buildCalcMessage(){
-    const lines=[];
-    if(refs.c_win.checked)  lines.push(`Windows: ${refs.q_win.value} x ${PRICES.win} = ${(refs.q_win.value*PRICES.win).toLocaleString()}`);
-    if(refs.c_off.checked)  lines.push(`Office/ПО: ${refs.q_off.value} x ${PRICES.office} = ${(refs.q_off.value*PRICES.office).toLocaleString()}`);
-    if(refs.c_mac.checked)  lines.push(`macOS: ${refs.q_mac.value} x ${PRICES.mac} = ${(refs.q_mac.value*PRICES.mac).toLocaleString()}`);
-    if(refs.c_fix.checked)  lines.push(`Фиксы: ${refs.q_fix.value} x ${PRICES.fix} = ${(refs.q_fix.value*PRICES.fix).toLocaleString()}`);
-    if(refs.c_hour.checked) lines.push(`Часы: ${refs.q_hour.value} x ${PRICES.hour} = ${(refs.q_hour.value*PRICES.hour).toLocaleString()}`);
-    if(refs.c_visit.checked)lines.push(`Выезд: ${refs.q_visit.value} x ${PRICES.visit} = ${(refs.q_visit.value*PRICES.visit).toLocaleString()}`);
-    const total = calcTotal();
-    lines.push(`Итог: ${total.toLocaleString()} KGS\n`);
-    lines.push('Удобное время/адрес: ');
-    return lines.join('\n');
-  }
-  refs.sendWhats.addEventListener('click', ()=>{
-    const msg = encodeURIComponent(buildCalcMessage());
-    window.open(`https://wa.me/${whatsappNumber}?text=${msg}`, '_blank');
-  });
-  refs.sendTg.addEventListener('click', ()=>{
-    const msg = encodeURIComponent(buildCalcMessage());
-    window.open(`https://t.me/eralinx?text=${msg}`, '_blank');
-  });
-
-  /* ===== Callback form -> messenger ===== */
-  function buildCallbackMessage(){
-    const name = (document.getElementById('f_name').value||'').trim();
-    const phone = (document.getElementById('f_phone').value||'').trim();
-    const text = (document.getElementById('f_msg').value||'').trim();
-    return encodeURIComponent(
-      `Заявка с сайта ByteBros\nИмя: ${name || '-'}\nТелефон: ${phone || '-'}\nКомментарий: ${text || '-'}`
-    );
-  }
-  document.getElementById('cb_whats').addEventListener('click', ()=>{
-    window.open(`https://wa.me/${whatsappNumber}?text=${buildCallbackMessage()}`,'_blank');
-  });
-  document.getElementById('cb_tg').addEventListener('click', ()=>{
-    window.open(`https://t.me/eralinx?text=${buildCallbackMessage()}`,'_blank');
-  });
-
-  // Init language switch button label
-  document.getElementById('langBtn').textContent = 'EN';
-</script>
+  <script src="script.js"></script>
 </body>
 </html>

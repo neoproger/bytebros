@@ -1,0 +1,251 @@
+// === НАСТРОЙКИ КОНТАКТОВ (ОБЯЗАТЕЛЬНО ПОМЕНЯЙ) ===
+const WA_NUMBER = "996505231104";     // формат: 996XXXXXXXXX (без +)
+const TG_USERNAME = "erlnbk";        // без @
+
+// ==================================================
+
+const burger = document.getElementById("burger");
+const nav = document.getElementById("nav");
+const year = document.getElementById("year");
+
+year.textContent = new Date().getFullYear();
+
+// ====== Меню ======
+burger?.addEventListener("click", () => {
+  const isOpen = nav.classList.toggle("open");
+  burger.setAttribute("aria-expanded", String(isOpen));
+});
+nav?.querySelectorAll("a").forEach((a) => {
+  a.addEventListener("click", () => {
+    nav.classList.remove("open");
+    burger.setAttribute("aria-expanded", "false");
+  });
+});
+document.addEventListener("click", (e) => {
+  if (!nav?.classList.contains("open")) return;
+  const clickInside = nav.contains(e.target) || burger.contains(e.target);
+  if (!clickInside) {
+    nav.classList.remove("open");
+    burger.setAttribute("aria-expanded", "false");
+  }
+});
+
+// ====== ДАННЫЕ УСЛУГ ======
+const SERVICES = [
+  { id: "diag_city", name: "Выезд и диагностика по городу Бишкек", price: 500 },
+  { id: "diag_out", name: "Выезд и диагностика загород", price: 1000 },
+  { id: "win_full", name: "Установка Windows со всеми драйверами и Office", price: 1300 },
+  { id: "office", name: "Установка и активация Office (Word, Excel)", price: 500 },
+  { id: "printer", name: "Установка и настройка драйверов принтера", price: 500 },
+  { id: "xprinter", name: "Установка и настройка драйверов принтера Xprinter", price: 800 },
+  { id: "adobe", name: "Установка программ (например Adobe)", price: 500 },
+  { id: "mac_lic", name: "Установка Office и Adobe с лицензией на macOS", price: 800 },
+  { id: "paste_pc", name: "Очистка и замена термопасты (ПК)", price: 800 },
+  { id: "paste_nb", name: "Очистка и замена термопасты (Ноутбук)", price: 1200 },
+  { id: "build_pc", name: "Сборка компьютера с готовыми комплектующими", price: 1000 },
+];
+
+// ====== РЕНДЕР КАЛЬКУЛЯТОРА ======
+const serviceList = document.getElementById("serviceList");
+const totalEl = document.getElementById("total");
+const clearAllBtn = document.getElementById("clearAll");
+
+function renderServices() {
+  if (!serviceList) return;
+  serviceList.innerHTML = SERVICES.map(s => `
+    <label class="sitem">
+      <input type="checkbox" value="${s.id}" />
+      <span class="sitem__name">${escapeHtml(s.name)}</span>
+      <span class="sitem__price">${s.price} сом</span>
+    </label>
+  `).join("");
+
+  serviceList.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener("change", updateTotal);
+  });
+}
+
+function getSelectedServices() {
+  const checked = Array.from(serviceList.querySelectorAll('input[type="checkbox"]:checked'))
+    .map(cb => cb.value);
+
+  return SERVICES.filter(s => checked.includes(s.id));
+}
+
+function updateTotal() {
+  const sum = getSelectedServices().reduce((acc, s) => acc + s.price, 0);
+  totalEl.textContent = String(sum);
+  return sum;
+}
+
+clearAllBtn?.addEventListener("click", () => {
+  serviceList.querySelectorAll('input[type="checkbox"]').forEach(cb => (cb.checked = false));
+  updateTotal();
+});
+
+renderServices();
+updateTotal();
+
+// ====== ФОРМА И ОТПРАВКА В МЕССЕНДЖЕРЫ ======
+const form = document.getElementById("orderForm");
+const statusEl = document.getElementById("orderStatus");
+const btnWA = document.getElementById("sendWA");
+const btnTG = document.getElementById("sendTG");
+
+function setErr(name, msg) {
+  const el = document.querySelector(`[data-err="${name}"]`);
+  if (el) el.textContent = msg || "";
+}
+
+function normalize(s) {
+  return (s || "").toString().trim();
+}
+
+function validate(formEl) {
+  const data = new FormData(formEl);
+
+  const name = normalize(data.get("name"));
+  const phone = normalize(data.get("phone"));
+  const address = normalize(data.get("address"));
+  const date = normalize(data.get("date"));
+  const time = normalize(data.get("time"));
+
+  setErr("name", ""); setErr("phone", ""); setErr("address", "");
+  setErr("date", ""); setErr("time", "");
+
+  let ok = true;
+
+  if (name.length < 2) { setErr("name", "Введите имя (минимум 2 символа)."); ok = false; }
+  if (!/^[+]?[\d\s()-]{7,}$/.test(phone)) { setErr("phone", "Введите корректный номер телефона."); ok = false; }
+  if (address.length < 5) { setErr("address", "Введите адрес (минимум 5 символов)."); ok = false; }
+  if (!date) { setErr("date", "Выберите дату."); ok = false; }
+  if (!time) { setErr("time", "Выберите время."); ok = false; }
+
+  const selected = getSelectedServices();
+  if (selected.length === 0) {
+    statusEl.textContent = "Выберите хотя бы одну услугу в калькуляторе.";
+    ok = false;
+  } else {
+    statusEl.textContent = "";
+  }
+
+  return { ok, data, selected };
+}
+
+function buildMessage(data, selected) {
+  const sum = selected.reduce((acc, s) => acc + s.price, 0);
+
+  const lines = [];
+  lines.push("Заявка с сайта Proton.kg");
+  lines.push("");
+  lines.push(`Имя: ${normalize(data.get("name"))}`);
+  lines.push(`Телефон: ${normalize(data.get("phone"))}`);
+  lines.push(`Адрес: ${normalize(data.get("address"))}`);
+  lines.push(`Удобное время: ${normalize(data.get("date"))} ${normalize(data.get("time"))}`);
+  lines.push("");
+  lines.push("Выбранные услуги:");
+  selected.forEach((s, i) => lines.push(`${i + 1}. ${s.name} — ${s.price} сом`));
+  lines.push("");
+  lines.push(`Итого: ${sum} сом`);
+
+  const comment = normalize(data.get("comment"));
+  if (comment) {
+    lines.push("");
+    lines.push(`Комментарий: ${comment}`);
+  }
+
+  return lines.join("\n");
+}
+
+function openWhatsApp(text) {
+  // wa.me работает лучше всего на мобильных, на ПК откроет web.whatsapp.com
+  const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`;
+  window.open(url, "_blank", "noopener,noreferrer");
+}
+
+function openTelegram(text) {
+  // Самый простой вариант: открыть чат @username + вставить текст через share url
+  // Если share не поддержит — всё равно откроется телеграм/веб-чат, текст можно вставить вручную.
+  const share = `https://t.me/share/url?url=&text=${encodeURIComponent(text)}`;
+  const direct = `https://t.me/${TG_USERNAME}`;
+  // Пробуем share, если нет — пользователь всё равно может перейти в чат по direct (кнопкой ниже можно добавить отдельно при желании)
+  window.open(share, "_blank", "noopener,noreferrer");
+  // запасной вариант: если хочешь вместо share открывать прямой чат — замени на direct
+  // window.open(direct, "_blank", "noopener,noreferrer");
+}
+
+btnWA?.addEventListener("click", () => {
+  const { ok, data, selected } = validate(form);
+  if (!ok) return;
+  const text = buildMessage(data, selected);
+  openWhatsApp(text);
+});
+
+btnTG?.addEventListener("click", () => {
+  const { ok, data, selected } = validate(form);
+  if (!ok) return;
+  const text = buildMessage(data, selected);
+  openTelegram(text);
+});
+
+// Вспомогательное (чтобы не ломать HTML в списке)
+function escapeHtml(str) {
+  return (str || "").toString()
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+// ====== New Year Snow (lightweight) ======
+(() => {
+  const canvas = document.getElementById("snow");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+  let w, h, flakes;
+
+  const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+  if (reduceMotion) return;
+
+  function resize() {
+    w = canvas.width = Math.floor(window.innerWidth * devicePixelRatio);
+    h = canvas.height = Math.floor(window.innerHeight * devicePixelRatio);
+    canvas.style.width = window.innerWidth + "px";
+    canvas.style.height = window.innerHeight + "px";
+
+    const count = Math.min(140, Math.floor((window.innerWidth * window.innerHeight) / 12000));
+    flakes = Array.from({ length: count }, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: (Math.random() * 2.2 + 0.7) * devicePixelRatio,
+      vx: (Math.random() * 0.6 - 0.3) * devicePixelRatio,
+      vy: (Math.random() * 1.2 + 0.6) * devicePixelRatio,
+      a: Math.random() * 0.6 + 0.25,
+    }));
+  }
+
+  function tick() {
+    ctx.clearRect(0, 0, w, h);
+    for (const f of flakes) {
+      f.x += f.vx;
+      f.y += f.vy;
+
+      if (f.y > h + 10) { f.y = -10; f.x = Math.random() * w; }
+      if (f.x > w + 10) f.x = -10;
+      if (f.x < -10) f.x = w + 10;
+
+      ctx.globalAlpha = f.a;
+      ctx.beginPath();
+      ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+      ctx.fillStyle = "#fff";
+      ctx.fill();
+    }
+    requestAnimationFrame(tick);
+  }
+
+  resize();
+  tick();
+  window.addEventListener("resize", resize, { passive: true });
+})();
