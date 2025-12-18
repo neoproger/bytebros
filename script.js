@@ -34,6 +34,17 @@ document.addEventListener("click", (e) => {
 const SERVICES = [
   { id: "diag_city", name: "Выезд и диагностика по городу Бишкек", price: 500 },
   { id: "diag_out", name: "Выезд и диагностика загород", price: 1000 },
+  {
+  id: "ssd_128",
+  name: "Ускорение ПК / ноутбука с SSD 128 ГБ (Windows + Office включены)",
+  price: 2500
+},
+{
+  id: "ssd_256",
+  name: "Ускорение ПК / ноутбука с SSD 256 ГБ (Windows + Office включены)",
+  price: 3500
+},
+
   { id: "win_full", name: "Установка Windows со всеми драйверами и Office", price: 1300 },
   { id: "office", name: "Установка и активация Office (Word, Excel)", price: 500 },
   { id: "printer", name: "Установка и настройка драйверов принтера", price: 500 },
@@ -53,12 +64,16 @@ const clearAllBtn = document.getElementById("clearAll");
 function renderServices() {
   if (!serviceList) return;
   serviceList.innerHTML = SERVICES.map(s => `
-    <label class="sitem">
-      <input type="checkbox" value="${s.id}" />
-      <span class="sitem__name">${escapeHtml(s.name)}</span>
-      <span class="sitem__price">${s.price} сом</span>
-    </label>
-  `).join("");
+  <label class="sitem">
+    <input type="checkbox" value="${s.id}" />
+    <span class="sitem__name">
+      ${escapeHtml(s.name)}
+      ${s.id.startsWith("ssd_") ? '<span class="tag-mini">Выгодно</span>' : ''}
+    </span>
+    <span class="sitem__price">${s.price} сом</span>
+  </label>
+`).join("");
+
 
   serviceList.querySelectorAll('input[type="checkbox"]').forEach(cb => {
     cb.addEventListener("change", updateTotal);
@@ -85,6 +100,7 @@ clearAllBtn?.addEventListener("click", () => {
 
 renderServices();
 updateTotal();
+
 
 // ====== ФОРМА И ОТПРАВКА В МЕССЕНДЖЕРЫ ======
 const form = document.getElementById("orderForm");
