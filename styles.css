@@ -432,3 +432,135 @@ input:focus, textarea:focus{border-color: rgba(110,231,255,.45)}
 .call-float:active{
   transform: scale(0.98);
 }
+/* === Santa Hat on .kg === */
+.kg-santa{
+  position: relative;
+  display: inline-block;
+  margin-left: 2px;
+  color: var(--accent);
+  font-weight: 900;
+}
+
+.santa-hat{
+  position: absolute;
+  top: -14px;
+  left: -6px;
+  width: 34px;
+  height: 18px;
+  background: #d32f2f;
+  border-radius: 6px 6px 12px 12px;
+  transform: rotate(-12deg);
+  box-shadow: 0 4px 10px rgba(0,0,0,.35);
+}
+
+.santa-hat::before{
+  content:"";
+  position:absolute;
+  top:-6px;
+  left:6px;
+  width:22px;
+  height:10px;
+  background:#fff;
+  border-radius:999px;
+}
+
+.santa-hat::after{
+  content:"";
+  position:absolute;
+  right:-6px;
+  top:8px;
+  width:8px;
+  height:8px;
+  background:#fff;
+  border-radius:50%;
+  box-shadow: 0 2px 6px rgba(0,0,0,.25);
+}
+
+/* Адаптация под мобильные */
+@media (max-width: 480px){
+  .santa-hat{
+    transform: rotate(-10deg) scale(.9);
+    top:-12px;
+  }
+}
+/* === Santa Hat on .kg (subtle) === */
+.kg-santa{
+  position: relative;
+  display: inline-block;
+  margin-left: 2px;
+  color: var(--accent);
+  font-weight: 900;
+}
+
+.santa-hat{
+  position: absolute;
+  top: -13px;
+  left: -6px;
+  width: 32px;
+  height: 16px;
+  background: #d32f2f;
+  border-radius: 6px 6px 12px 12px;
+  transform: rotate(-10deg);
+  box-shadow: 0 4px 10px rgba(0,0,0,.28);
+  transform-origin: 10px 14px;
+  animation: hat-sway 3.8s ease-in-out infinite;
+  opacity: .95;
+}
+
+.santa-hat::before{
+  content:"";
+  position:absolute;
+  top:-6px;
+  left:6px;
+  width:22px;
+  height:9px;
+  background:#fff;
+  border-radius:999px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.12);
+}
+
+.santa-hat::after{
+  content:"";
+  position:absolute;
+  right:-6px;
+  top:8px;
+  width:8px;
+  height:8px;
+  background:#fff;
+  border-radius:50%;
+  box-shadow: 0 2px 6px rgba(0,0,0,.18);
+}
+
+@keyframes hat-sway{
+  0%, 100% { transform: rotate(-10deg) translateY(0); }
+  50%      { transform: rotate(-6deg) translateY(1px); }
+}
+
+/* Уважение к настройке "уменьшить анимации" */
+@media (prefers-reduced-motion: reduce){
+  .santa-hat{ animation: none; }
+}
+
+/* Чуть меньше на очень маленьких экранах */
+@media (max-width: 480px){
+  .santa-hat{
+    top:-12px;
+    transform: rotate(-10deg) scale(.92);
+  }
+}
+/* === New Year Sale Badge === */
+.sale-badge{
+  display:inline-block;
+  margin-left:10px;
+  padding:6px 10px;
+  font-size:12px;
+  font-weight:900;
+  border-radius:999px;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color:#fff;
+  vertical-align:middle;
+  box-shadow: 0 6px 18px rgba(0,0,0,.35);
+}
+.sale-badge:hover{
+  transform: translateY(-1px) scale(1.05);
+}

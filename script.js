@@ -249,3 +249,23 @@ function escapeHtml(str) {
   tick();
   window.addEventListener("resize", resize, { passive: true });
 })();
+// === Auto disable Santa hat after Jan 7 ===
+(() => {
+  const hat = document.querySelector(".santa-hat");
+  if (!hat) return;
+
+  const now = new Date();
+  const year = now.getFullYear();
+
+  // Праздничный период: 1 декабря — 7 января
+  const start = new Date(year, 11, 1);   // 1 Dec
+  const end = new Date(year + 1, 0, 7);  // 7 Jan
+
+  const isHoliday =
+    (now >= start && now <= end) ||
+    (now.getMonth() === 0 && now.getDate() <= 7);
+
+  if (!isHoliday) {
+    hat.style.display = "none";
+  }
+})();
