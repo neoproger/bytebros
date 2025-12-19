@@ -10,25 +10,25 @@
 </head>
 
 <body>
+  
     <a class="call-float" href="tel:+996700123456" aria-label="Позвонить">
       📞
      </a>
 
     
     <canvas id="snow" aria-hidden="true"></canvas>
+    
 
   <header class="header">
     <div class="container header__row">
       <a class="logo" href="#top">
-        Proton
-         <span class="kg-santa">
-           .kg
-           <i class="santa-hat"></i>
-         </span>
-      </a>
+  <img src="assets/logo.png" alt="Proton.kg" class="logo-img" />
+</a>
+
 
 
       <nav class="nav" id="nav">
+        <a class="btn btn--ghost" href="remote.html">Удалённая помощь</a>
         <a href="#services">Услуги</a>
         <a href="#prices">Цены</a>
         <a href="#calc">Калькулятор</a>
@@ -36,11 +36,12 @@
       </nav>
 
       <div class="header__actions">
+        <span class="status-pill" id="onlineStatus">● Проверяем…</span>
         <a class="chip chip--call" href="tel:+996700123456" title="Позвонить">
            📞
          </a>
 
-        <a class="chip" href="#calc" title="Сделать расчёт">🧮 Рассчитать</a>
+        <a class="chip" href="#calc" title="Сделать расчёт">🧮 </a>
         <button class="burger" id="burger" aria-label="Меню" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
@@ -162,6 +163,15 @@
       <div class="container">
         <h2>Калькулятор заявки</h2>
         <p class="muted">Выбери услуги, укажи адрес и удобное время — затем отправь в WhatsApp или Telegram.</p>
+       <div class="card quick">
+  <div class="quick__title">Быстрый выбор</div>
+  <div class="quick__btns">
+    <button class="chip" type="button" data-quick="slow">⚡ Компьютер тормозит</button>
+    <button class="chip" type="button" data-quick="printer">🖨 Не работает принтер</button>
+    <button class="chip" type="button" data-quick="programs">💻 Установить программы</button>
+    <button class="chip" type="button" data-quick="remote">🛠 Удалённо (AnyDesk)</button>
+  </div>
+</div>
 
         <div class="grid2">
           <div class="card calc">
@@ -239,6 +249,28 @@
         </div>
       </div>
     </section>
+    <section class="section" id="not-do">
+  <div class="container">
+    <h2>Что мы не делаем</h2>
+    <p class="muted">Чтобы было честно и понятно заранее.</p>
+
+    <div class="grid3">
+      <div class="card feature">
+        <h3>❌ Взломы и «серые» услуги</h3>
+        <p class="muted">Не занимаемся взломом аккаунтов, обходом паролей и т.п.</p>
+      </div>
+      <div class="card feature">
+        <h3>❌ Скрытые доплаты</h3>
+        <p class="muted">Цена согласуется до работы. Без “внезапных” доплат.</p>
+      </div>
+      <div class="card feature">
+        <h3>❌ Лишние услуги</h3>
+        <p class="muted">Не навязываем то, что вам не нужно.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 
     <section class="section" id="contact">
   <div class="container">
@@ -286,7 +318,7 @@
 
   <footer class="footer">
     <div class="container footer__row">
-      <span class="muted">© <span id="year"></span> Proton.kg</span>
+      <span class="muted">© 2023–<span id="year"></span> Proton.kg</span>
       <a class="muted" href="#top">Наверх ↑</a>
     </div>
   </footer>

@@ -622,3 +622,103 @@ input:focus, textarea:focus{border-color: rgba(110,231,255,.45)}
     grid-template-columns:1fr;
   }
 }
+.nav a.active{ color: var(--text); font-weight: 900; }
+/* Ровные карточки в гриде */
+.grid3 > .card{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Внутри прайс-карточек кнопку вниз */
+.price{
+  display:flex;
+  flex-direction:column;
+  height:100%;
+}
+
+.price .btn{
+  margin-top:auto;     /* кнопка всегда внизу */
+  align-self:flex-start;
+}
+/* === Online status pill === */
+.status-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background: rgba(255,255,255,.04);
+  color: var(--muted);
+  font-weight:900;
+  font-size:12px;
+  white-space: nowrap;
+}
+.status-pill.on{ color:#22c55e; border-color: rgba(34,197,94,.35); background: rgba(34,197,94,.10); }
+.status-pill.off{ color:#f59e0b; border-color: rgba(245,158,11,.35); background: rgba(245,158,11,.10); }
+/* === Quick scenarios === */
+.quick{ padding:16px; margin-top:16px; }
+.quick__title{ font-weight:1000; margin-bottom:10px; }
+.quick__btns{ display:flex; gap:10px; flex-wrap:wrap; }
+/* === Logo hover animation (clean & subtle) === */
+.logo{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  transition: transform .25s ease;
+  will-change: transform;
+}
+
+.logo-img{
+  height:34px;
+  width:auto;
+  transition:
+    transform .35s ease,
+    filter .35s ease;
+  will-change: transform;
+}
+
+.kg-santa{
+  transition:
+    color .25s ease,
+    transform .25s ease;
+}
+
+/* Hover effect */
+.logo:hover{
+  transform: translateY(-1px);
+}
+
+.logo:hover .logo-img{
+  transform: scale(1.03);
+  filter: drop-shadow(0 6px 14px rgba(110,231,255,.25));
+}
+
+.logo:hover .kg-santa{
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+/* Santa hat reacts slightly */
+.logo:hover .santa-hat{
+  animation: hat-hover 0.9s ease-in-out;
+}
+
+/* Gentle hat movement */
+@keyframes hat-hover{
+  0%   { transform: rotate(-10deg) translateY(0); }
+  50%  { transform: rotate(-6deg) translateY(1px); }
+  100% { transform: rotate(-10deg) translateY(0); }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .logo,
+  .logo-img,
+  .kg-santa,
+  .santa-hat{
+    transition:none;
+    animation:none;
+  }
+}

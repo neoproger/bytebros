@@ -285,3 +285,97 @@ function escapeHtml(str) {
     hat.style.display = "none";
   }
 })();
+// === Online / Offline status (Asia/Bishkek) ===
+(() => {
+  const el = document.getElementById("onlineStatus");
+  if (!el) return;
+
+  const TZ = "Asia/Bishkek";
+  const START_H = 9;   // 09:00
+  const END_H = 21;    // 21:00
+
+  function getBishkekHour() {
+    const parts = new Intl.DateTimeFormat("en-US", {
+      timeZone: TZ,
+      hour: "2-digit",
+      hour12: false
+    }).formatToParts(new Date());
+    const hour = parseInt(parts.find(p => p.type === "hour")?.value || "0", 10);
+    return hour;
+  }
+
+  function tick() {
+    const h = getBishkekHour();
+    const online = h >= START_H && h < END_H;
+
+    el.classList.remove("on", "off");
+    if (online) {
+      el.classList.add("on");
+      el.textContent = `🟢 Онлайн (${START_H}:00–${END_H}:00)`;
+    } else {
+      el.classList.add("off");
+      el.textContent = `🟠 Оффлайн (${START_H}:00–${END_H}:00)`;
+    }
+  }
+
+  tick();
+  setInterval(tick, 60_000);
+})();
+// === Quick scenarios (index.html calculator) ===
+(() => {
+  const wrap = document.querySelector(".quick__btns");
+  const form = document.getElementById("orderForm");
+  if (!wrap || !serviceList || !form) return;
+
+  function setChecked(ids) {
+    const set = new Set(ids);
+    serviceList.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+      cb.checked = set.has(cb.value);
+    });
+    updateTotal();
+  }
+
+  function appendToComment(text) {
+    const ta = form.querySelector('textarea[name="comment"]');
+    if (!ta) return;
+    const cur = (ta.value || "").trim();
+    ta.value = cur ? (cur + "\n" + text) : text;
+  }
+
+  function scrollToForm() {
+    form.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  wrap.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-quick]");
+    if (!btn) return;
+    const t = btn.getAttribute("data-quick");
+
+    if (t === "slow") {
+      // НЕ выбираем сразу 128/256 — просто подводим к SSD и просим уточнить.
+      setChecked([]); // очистим
+      appendToComment("Симптом: компьютер/ноутбук тормозит. Хочу ускорение. (Уточните: ПК или ноутбук? SSD 128 или 256?)");
+      // подсказка: прокрутка к списку услуг
+      document.getElementById("serviceList")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+
+    if (t === "printer") {
+      setChecked(["printer"]); // если Xprinter — клиент уточнит, мы пометим
+      appendToComment("Принтер: не печатает / нужен драйвер. (Если Xprinter — напишите модель).");
+      scrollToForm();
+      return;
+    }
+
+    if (t === "programs") {
+      setChecked(["office"]); // базовый вариант
+      appendToComment("Нужно установить программы. (Какие именно: Office/Adobe/другое? Windows нужна или нет?)");
+      scrollToForm();
+      return;
+    }
+
+    if (t === "remote") {
+      window.location.href = "remote.html";
+    }
+  });
+})();
