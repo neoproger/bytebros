@@ -70,6 +70,7 @@
 </head>
 
 <body>
+  <canvas id="snow"></canvas>
   <header class="header">
     <div class="container header__row">
       <a class="logo" href="index.html">Proton<span>.kg</span></a>
@@ -275,7 +276,7 @@
 
         <h2 style="margin-top:28px">Контакты</h2>
         <div class="remote-contacts">
-          <a class="contact-card" href="tel:+996700123456">
+          <a class="contact-card" href="tel:+996505231104">
             <img src="assets/icons/phone.png" alt="Звонок">
             <div>
               <div class="contact-title">Позвонить</div>
@@ -395,5 +396,69 @@
       openTG(buildText(v.data));
     });
   </script>
+  <script>
+/* === Snow effect (light, performance-safe) === */
+(() => {
+  const today = new Date();
+  const end = new Date(today.getFullYear(), 0, 8); // 8 января
+  if (today >= end) return;
+
+  const canvas = document.getElementById("snow");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+  let w, h;
+  let flakes = [];
+
+  const MAX_FLAKES = 80;   // аккуратно, не грузит
+  const SPEED = 0.6;
+
+  function resize(){
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+
+  function createFlake(){
+    return {
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: Math.random() * 2 + 1,
+      s: Math.random() * SPEED + 0.2,
+      o: Math.random() * 0.6 + 0.2
+    };
+  }
+
+  function init(){
+    resize();
+    flakes = Array.from({ length: MAX_FLAKES }, createFlake);
+  }
+
+  function draw(){
+    ctx.clearRect(0, 0, w, h);
+    for (const f of flakes){
+      ctx.beginPath();
+      ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${f.o})`;
+      ctx.fill();
+
+      f.y += f.s;
+      f.x += Math.sin(f.y * 0.01) * 0.3;
+
+      if (f.y > h){
+        f.y = -5;
+        f.x = Math.random() * w;
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+
+  // Respect reduced motion
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  init();
+  draw();
+  window.addEventListener("resize", resize);
+})();
+</script>
 </body>
 </html>
