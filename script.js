@@ -312,10 +312,10 @@ function escapeHtml(str) {
     el.classList.remove("on", "off");
     if (online) {
       el.classList.add("on");
-      el.textContent = `🟢 Онлайн (${START_H}:00–${END_H}:00)`;
+      el.textContent = `🟢 Принимаем (${START_H}:00–${END_H}:00)`;
     } else {
       el.classList.add("off");
-      el.textContent = `🟠 Оффлайн (${START_H}:00–${END_H}:00)`;
+      el.textContent = `🟠 Закрыто (${START_H}:00–${END_H}:00)`;
     }
   }
 
@@ -379,4 +379,70 @@ function escapeHtml(str) {
       window.location.href = "remote.html";
     }
   });
+})();
+// === Reviews (localStorage MVP) ===
+(() => {
+  const form = document.getElementById("reviewForm");
+  const list = document.getElementById("reviewsList");
+  const starsWrap = document.getElementById("stars");
+  const status = document.getElementById("reviewStatus");
+  if (!form || !list || !starsWrap) return;
+
+  let rating = 0;
+  const LS_KEY = "proton_reviews";
+
+  // Звёзды
+  starsWrap.addEventListener("click", (e) => {
+    const s = e.target.closest("span");
+    if (!s) return;
+    rating = Number(s.dataset.v);
+    starsWrap.querySelectorAll("span").forEach(st => {
+      st.classList.toggle("active", Number(st.dataset.v) <= rating);
+    });
+  });
+
+  function load(){
+    const data = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
+    list.innerHTML = "";
+    data.slice().reverse().forEach(addToDOM);
+  }
+
+  function addToDOM(r){
+    const div = document.createElement("div");
+    div.className = "review";
+    div.innerHTML = `
+      <div class="review__head">
+        <span class="review__name">${escapeHtml(r.name)}</span>
+        <span class="review__stars">${"★".repeat(r.rating)}</span>
+      </div>
+      <div class="review__text">${escapeHtml(r.text)}</div>
+    `;
+    list.appendChild(div);
+  }
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const fd = new FormData(form);
+    const name = fd.get("name").trim();
+    const text = fd.get("text").trim();
+
+    if (!name || !text || rating === 0){
+      status.textContent = "Заполните все поля и выберите оценку.";
+      return;
+    }
+
+    const review = { name, text, rating, t: Date.now() };
+    const arr = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
+    arr.push(review);
+    localStorage.setItem(LS_KEY, JSON.stringify(arr));
+
+    form.reset();
+    rating = 0;
+    starsWrap.querySelectorAll("span").forEach(s => s.classList.remove("active"));
+    status.textContent = "Спасибо за отзыв!";
+
+    load();
+  });
+
+  load();
 })();

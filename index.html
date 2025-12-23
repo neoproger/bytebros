@@ -89,57 +89,7 @@
         </div>
       </div>
     </section>
-
-    <section class="section" id="prices">
-      <div class="container">
-        <h2>Цены
-             <span class="sale-badge" id="saleBadge">Акция −10%</span>
-          </h2>
-        <p class="muted">Ниже — прайс и калькулятор. Можно выбрать несколько услуг.</p>
-
-        <div class="card tablecard">
-          <div class="table">
-            <div class="table__row table__head">
-              <div>Услуга</div>
-              <div class="right">Цена</div>
-            </div>
-
-            <div class="table__row"><div>Выезд и диагностика по городу Бишкек</div><div class="right"><b>500</b> сом</div></div>
-            <div class="table__row"><div>Выезд и диагностика загород</div><div class="right"><b>1000</b> сом</div></div>
-            <div class="table__row"><div>Установка Windows со всеми драйверами и Office</div><div class="right"><b>1300</b> сом</div></div>
-            <div class="table__row">
-              <div>
-                Ускорение компьютера / ноутбука с SSD 128 ГБ
-               <div class="muted tiny">
-                 SSD + установка Windows и Office входят в стоимость
-                 </div>
-               </div>
-               <div class="right"><b>2500</b> сом</div>
-              </div>
-
-          <div class="table__row">
-          <div>
-            Ускорение компьютера / ноутбука с SSD 256 ГБ
-            <div class="muted tiny">
-      SSD + установка Windows и Office входят в стоимость
-    </div>
-  </div>
-  <div class="right"><b>3500</b> сом</div>
-</div>
-            <div class="table__row"><div>Установка и активация Office (Word, Excel)</div><div class="right"><b>500</b> сом</div></div>
-            <div class="table__row"><div>Установка и настройка драйверов принтера</div><div class="right"><b>500</b> сом</div></div>
-            <div class="table__row"><div>Установка и настройка драйверов принтера Xprinter</div><div class="right"><b>800</b> сом</div></div>
-            <div class="table__row"><div>Установка программ (например Adobe)</div><div class="right"><b>500</b> сом</div></div>
-            <div class="table__row"><div>Установка Office и Adobe с лицензией на macOS</div><div class="right"><b>800</b> сом</div></div>
-            <div class="table__row"><div>Очистка и замена термопасты (ПК)</div><div class="right"><b>800</b> сом</div></div>
-            <div class="table__row"><div>Очистка и замена термопасты (Ноутбук)</div><div class="right"><b>1200</b> сом</div></div>
-            <div class="table__row"><div>Сборка компьютера с готовыми комплектующими</div><div class="right"><b>1000</b> сом</div></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- КАЛЬКУЛЯТОР -->
+  <!-- КАЛЬКУЛЯТОР -->
     <section class="section" id="calc">
       <div class="container">
         <h2>Калькулятор заявки</h2>
@@ -251,6 +201,55 @@
     </div>
   </div>
 </section>
+
+<section class="section" id="reviews">
+  <div class="container">
+    <h2>Отзывы клиентов</h2>
+    <p class="muted">Ваше мнение помогает нам становиться лучше.</p>
+
+    <div class="grid2">
+      <!-- Форма -->
+      <div class="card review-form">
+        <h3>Оставить отзыв</h3>
+
+        <form id="reviewForm">
+          <label>
+            Имя
+            <input type="text" name="name" minlength="2" required />
+          </label>
+
+          <label>
+            Оценка
+            <div class="stars" id="stars">
+              <!-- звёзды -->
+              <span data-v="1">★</span>
+              <span data-v="2">★</span>
+              <span data-v="3">★</span>
+              <span data-v="4">★</span>
+              <span data-v="5">★</span>
+            </div>
+          </label>
+
+          <label>
+            Отзыв
+            <textarea name="text" rows="4" minlength="10" required
+              placeholder="Опишите ваш опыт работы с нами"></textarea>
+          </label>
+
+          <button class="btn" type="submit">Отправить</button>
+          <p class="muted tiny" id="reviewStatus"></p>
+        </form>
+      </div>
+
+      <!-- Список отзывов -->
+      <div class="card review-list">
+        <h3>Последние отзывы</h3>
+        <div id="reviewsList" class="reviews"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
 
     <section class="section" id="contact">

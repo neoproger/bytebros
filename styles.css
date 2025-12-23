@@ -722,3 +722,50 @@ input:focus, textarea:focus{border-color: rgba(110,231,255,.45)}
     animation:none;
   }
 }
+/* === Reviews === */
+.review-form, .review-list{ padding:18px; }
+
+.stars{
+  display:flex;
+  gap:6px;
+  font-size:24px;
+  cursor:pointer;
+}
+.stars span{
+  color: rgba(255,255,255,.25);
+  transition: color .2s ease, transform .2s ease;
+}
+.stars span.active,
+.stars span:hover,
+.stars span:hover ~ span{
+  color: #fbbf24;
+}
+.stars span:hover{
+  transform: scale(1.1);
+}
+
+.reviews{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  margin-top:10px;
+}
+.review{
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:12px;
+  background: rgba(255,255,255,.03);
+}
+.review__head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+.review__name{ font-weight:900; }
+.review__stars{ color:#fbbf24; font-size:14px; }
+.review__text{
+  margin-top:6px;
+  color:var(--muted);
+  font-size:14px;
+}
