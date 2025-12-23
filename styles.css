@@ -769,3 +769,8 @@ input:focus, textarea:focus{border-color: rgba(110,231,255,.45)}
   color:var(--muted);
   font-size:14px;
 }
+/* Другая проблема */
+.sitem[data-id="other"] .sitem__price{
+  color: var(--muted);
+  font-style: italic;
+}

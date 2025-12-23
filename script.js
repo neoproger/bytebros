@@ -55,6 +55,12 @@ const SERVICES = [
   { id: "paste_pc", name: "Очистка и замена термопасты (ПК)", price: 800 },
   { id: "paste_nb", name: "Очистка и замена термопасты (Ноутбук)", price: 1200 },
   { id: "build_pc", name: "Сборка компьютера с готовыми комплектующими", price: 1000 },
+  {
+  id: "other",
+  name: "Другая проблема (описать вручную)",
+  price: 0
+}
+
 ];
 
 // ====== РЕНДЕР КАЛЬКУЛЯТОРА ======
@@ -71,7 +77,10 @@ function renderServices() {
       ${escapeHtml(s.name)}
       ${s.id.startsWith("ssd_") ? '<span class="tag-mini">Выгодно</span>' : ''}
     </span>
-    <span class="sitem__price">${s.price} сом</span>
+    <span class="sitem__price">
+  ${s.price > 0 ? `${s.price} сом` : "по договорённости"}
+</span>
+
   </label>
 `).join("");
 
@@ -323,6 +332,31 @@ function escapeHtml(str) {
   setInterval(tick, 60_000);
 })();
 // === Quick scenarios (index.html calculator) ===
+// === Other problem logic ===
+(() => {
+  const list = document.getElementById("serviceList");
+  const form = document.getElementById("orderForm");
+  if (!list || !form) return;
+
+  const comment = form.querySelector('textarea[name="comment"]');
+  if (!comment) return;
+
+  list.addEventListener("change", (e) => {
+    const cb = e.target;
+    if (cb.type !== "checkbox") return;
+
+    if (cb.value === "other" && cb.checked) {
+      comment.focus();
+      if (!comment.value.trim()) {
+        comment.value =
+          "Другая проблема:\n" +
+          "— устройство (ПК / ноутбук / принтер):\n" +
+          "— что не работает:\n";
+      }
+    }
+  });
+})();
+
 (() => {
   const wrap = document.querySelector(".quick__btns");
   const form = document.getElementById("orderForm");
@@ -378,6 +412,23 @@ function escapeHtml(str) {
     if (t === "remote") {
       window.location.href = "remote.html";
     }
+    if (cb.value === "other" && cb.checked) {
+  // ОЧИЩАЕМ все автотексты
+  comment.value =
+    "Другая проблема:\n" +
+    "— устройство (ПК / ноутбук / принтер):\n" +
+    "— что не работает:\n";
+
+  comment.focus();
+
+  // Снимаем галочки с остальных услуг
+  list.querySelectorAll('input[type="checkbox"]').forEach(x => {
+    if (x.value !== "other") x.checked = false;
+  });
+
+  if (typeof updateTotal === "function") updateTotal();
+}
+
   });
 })();
 // === Reviews (localStorage MVP) ===
