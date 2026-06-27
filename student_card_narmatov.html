@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Личная карточка | Нарматов Эрланбек Эркинбаевич</title>
+  <style>
+    :root{
+      --blue:#2f5ea6;--blue-2:#3b73c8;--orange:#f39a1f;
+      --text:#1f2937;--muted:#6b7280;--bg:#f3f4f6;--card:#ffffff;
+      --line:#e5e7eb;--shadow:0 10px 25px rgba(15,23,42,.10);--radius:14px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 500px at 50% 20%, rgba(47,94,166,.08), transparent 60%),
+        radial-gradient(1200px 500px at 50% 65%, rgba(243,154,31,.06), transparent 55%),
+        var(--bg);
+    }
+    .wrap{max-width:1150px;margin:28px auto;padding:0 18px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .profile{display:flex;gap:18px;align-items:center;padding:18px}
+    .avatar{
+      width:86px;height:86px;border-radius:10px;
+      background:#dbeafe;border:1px solid var(--line);
+      overflow:hidden;flex:0 0 auto;
+      display:flex;align-items:center;justify-content:center;
+      font-size:32px;font-weight:700;color:var(--blue);
+    }
+    .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+    .p-title{font-weight:700;font-size:22px;color:var(--blue)}
+    .p-sub{margin:6px 0 0;color:var(--muted);line-height:1.35}
+    .p-meta{display:flex;gap:18px;flex-wrap:wrap;margin-top:10px;color:#374151;font-weight:600}
+    .pill{background:#f8fafc;border:1px solid var(--line);padding:8px 10px;border-radius:10px;font-weight:600}
+    .grid{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    @media(max-width:900px){.grid{grid-template-columns:1fr}}
+    .panel{position:relative;padding:18px 18px 12px;overflow:hidden}
+    .panel:before{
+      content:"";position:absolute;left:0;top:0;bottom:0;width:10px;
+      background:linear-gradient(180deg,var(--blue),var(--blue-2));
+      border-radius:12px 0 0 12px;
+    }
+    .panel h2{margin:0 0 12px;text-align:center;color:var(--orange);font-size:22px;letter-spacing:.3px}
+    .mini-list{padding:0 8px 6px;list-style:none}
+    .mini-item{display:flex;justify-content:space-between;gap:10px;padding:7px 2px;border-bottom:1px solid var(--line);font-size:14px}
+    .mini-item:last-child{border-bottom:none}
+    .score{font-weight:800;color:#111827;min-width:34px;text-align:right}
+    .more{text-align:right;font-weight:700;color:var(--blue);padding:8px 8px 2px;font-size:13px;user-select:none;cursor:pointer}
+    .more:hover{opacity:.85}
+    .orders{padding:0 8px 8px;font-size:14px;line-height:1.45}
+    .orders .label{color:var(--blue);font-weight:800;margin-top:2px}
+    .orders .big{font-weight:800;font-size:18px;margin:4px 0 8px}
+    .orders .muted{color:var(--muted);font-weight:600;margin:2px 0}
+    .orders .text{margin:6px 0;color:#111827}
+    .table-card{margin-top:18px;padding:12px 12px 16px}
+    .table-top{display:flex;justify-content:flex-end;align-items:center;gap:10px;padding:6px 6px 10px}
+    .table-top .tlabel{color:var(--muted);font-weight:700}
+    select{border:1px solid var(--line);border-radius:8px;padding:6px 10px;background:white;font-weight:700;color:#374151;outline:none}
+    table{width:100%;border-collapse:separate;border-spacing:0;overflow:hidden;border-radius:10px;border:1px solid var(--line);background:#fff}
+    thead th{background:var(--blue);color:#fff;font-weight:800;font-size:13px;padding:10px;border-right:1px solid rgba(255,255,255,.18);text-align:center;white-space:nowrap}
+    thead th:last-child{border-right:none}
+    tbody td{padding:10px;border-top:1px solid var(--line);border-right:1px solid var(--line);font-size:13px;vertical-align:middle;background:#fff}
+    tbody tr td:last-child{border-right:none}
+    tbody tr:hover td{background:#f8fafc}
+    .section-row td{background:#f1f5f9!important;font-weight:900;text-align:center;color:#111827;border-top:1px solid var(--line)}
+    .credits-row td{background:#e5e7eb!important;font-weight:800;color:#111827;text-align:left}
+    .col-n{width:58px;text-align:center}
+    .col-h{width:110px;text-align:center}
+    .col-f{width:150px;text-align:center}
+    .col-b{width:170px;text-align:center}
+    .col-g{width:120px;text-align:center}
+    .col-date{width:130px;text-align:center}
+    .grade-badge{display:inline-block;padding:3px 10px;border-radius:999px;font-weight:900;border:1px solid var(--line);background:#f8fafc;text-transform:lowercase}
+    .points{font-weight:900;text-decoration:underline;text-underline-offset:2px}
+    .contract-block{
+      display:flex;flex-direction:column;gap:6px;
+      min-width:190px;
+      border-left:1px solid var(--line);
+      padding-left:18px;
+      font-size:14px;
+    }
+    .c-row{display:flex;justify-content:space-between;align-items:center;gap:14px}
+    .c-label{color:var(--blue);font-weight:800;white-space:nowrap}
+    .c-val{font-weight:700;color:#111827}
+    .c-val.green{color:#16a34a}
+    .c-val.red{color:#dc2626}
+    .c-val.orange{color:var(--orange)}
+    .c-program{margin-top:4px;color:var(--muted);font-size:12px;font-weight:600;text-align:right}
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="card profile">
+    <div class="avatar"><img src="photo.png" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+    <div style="flex:1 1 auto">
+      <h1 class="p-title">Нарматов Эрланбек Эркинбаевич</h1>
+      <div class="p-sub">ИИТ гр. ПИн(б)-1-23<br>22\112523e</div>
+      <div class="p-meta">
+        <div class="pill" id="pYear">2025-26 - учебный год</div>
+        <div class="pill" id="pSem">Летний семестр</div>
+      </div>
+    </div>
+    <div class="contract-block">
+      <div class="c-row"><span class="c-label">Контракт:</span><span class="c-val">8410 сом</span></div>
+      <div class="c-row"><span class="c-label">Оплатил:</span><span class="c-val green">8410 сом</span></div>
+      <div class="c-row"><span class="c-label">Долг:</span><span class="c-val">0 сом</span></div>
+      <div class="c-row"><span class="c-label">Допуск:</span><span class="c-val orange">допуск</span></div>
+      <div class="c-program">Технология разработки программного обеспечения<br>(очная бакалавр) (ИИТ)</div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card panel">
+      <h2>Успеваемость</h2>
+      <ul class="mini-list" id="perfList"></ul>
+      
+    </div>
+    <div class="card panel">
+      <h2>Приказы</h2>
+      <div class="orders">
+        <div class="label">Прибытие</div>
+        <div class="text"><b>Перевод по курсу</b></div>
+        <div class="big">28.08.2025</div>
+        <div class="muted">2025-26-учебный год</div>
+        <div class="muted">3-курс</div>
+        <div class="text">Технология разработки программного обеспечения (очная бакалавр) (ИИТ)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card table-card">
+    <div class="table-top">
+      <div class="tlabel">Оценки за</div>
+      <select id="yearSelect"></select>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th class="col-n">№</th>
+          <th>Дисциплина</th>
+          <th class="col-h">Кол. час</th>
+          <th class="col-f">Форма контроля</th>
+          <th class="col-b">Количество баллов</th>
+          <th class="col-g">Оценка</th>
+          <th class="col-date">Дата сдачи</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+  const DATA = {
+    perf: [
+      { title: "Тестирование программного обеспечения", score: 70 },
+      { title: "Производственная практика 1", score: 68 },
+      { title: "Современные языки программирования 1", score: 70 },
+      { title: "Управление программными проектами", score: 75 },
+      { title: "Проектирование и архитектура программных систем 2", score: 70 },
+      { title: "Мультимедиа технологии", score: 68 },
+      { title: "Программирование на языке высокого уровня", score: 74 }
+    ],
+    years: [
+      {
+        label: "2022-23 учебный год",
+        blocks: [
+          {
+            title: "1-семестр",
+            creditsTotalText: "Итого зарегистрированных кредитов за 1-семестр: 30",
+            rows: [
+              { n:1, disc:"Физика [5 кр.]", hours:150, form:"Экзамен", points:62, grade:"удов", date:"24.01.24" },
+              { n:2, disc:"Теория информационных процессов и систем [5 кр.]", hours:0, form:"Экзамен", points:78, grade:"хор", date:"15.04.25" },
+              { n:3, disc:"Манасоведение [2 кр.]", hours:0, form:"Экзамен", points:74, grade:"хор", date:"15.04.25" },
+              { n:4, disc:"Иностранный язык [4 кр.]", hours:120, form:"Экзамен", points:67, grade:"удов", date:"15.04.25" },
+              { n:5, disc:"Математика 1 [5 кр.]", hours:150, form:"Экзамен", points:61, grade:"удов", date:"30.12.22" },
+              { n:6, disc:"Информатика 1 [5 кр.]", hours:150, form:"Экзамен", points:61, grade:"удов", date:"16.02.23" },
+              { n:7, disc:"Физическая культура 1 [0 кр.]", hours:0, form:"Зачет", points:88, grade:"зачет", date:"15.04.25" },
+              { n:8, disc:"Кыргызский язык (профессиональный) 1 и литература [4 кр.]", hours:0, form:"Экзамен", points:74, grade:"хор", date:"12.07.25" }
+            ]
+          },
+          {
+            title: "2-семестр",
+            creditsTotalText: "Итого зарегистрированных кредитов за 2-семестр: 25",
+            rows: [
+              { n:1, disc:"Русский язык [4 кр.]", hours:0, form:"Экзамен", points:74, grade:"хор", date:"15.04.25" },
+              { n:2, disc:"Информатика 2 [5 кр.]", hours:150, form:"Экзамен", points:76, grade:"хор", date:"12.07.25" },
+              { n:3, disc:"Математика 2 [5 кр.]", hours:150, form:"Экзамен", points:74, grade:"хор", date:"25.05.23" },
+              { n:4, disc:"Основы Web-технологий [0 кр.]", hours:0, form:"Курс/пр", points:68, grade:"удов", date:"15.04.25" },
+              { n:5, disc:"Основы Web-технологий [5 кр.]", hours:0, form:"Экзамен", points:63, grade:"удов", date:"15.04.25" },
+              { n:6, disc:"Физическая культура 2 [0 кр.]", hours:0, form:"Зачет", points:88, grade:"зачет", date:"15.04.25" },
+              { n:7, disc:"Кыргызский язык (профессиональный) 2 и литература [4 кр.]", hours:0, form:"Экзамен", points:87, grade:"отл", date:"12.07.25" },
+              { n:8, disc:"География Кыргызстана [2 кр.]", hours:0, form:"Экзамен", points:88, grade:"отл", date:"12.07.25" }
+            ]
+          }
+        ]
+      },
+      {
+        label: "2024-25 учебный год",
+        blocks: [
+          {
+            title: "5-семестр",
+            creditsTotalText: "Итого зарегистрированных кредитов за 5-семестр: 30",
+            rows: [
+              { n:1, disc:"Методы оптимизации [5 кр.]", hours:150, form:"Экзамен", points:61, grade:"удов", date:"14.02.25" },
+              { n:2, disc:"Управление данными [0 кр.]", hours:0, form:"Курс/пр", points:70, grade:"удов", date:"28.12.24" },
+              { n:3, disc:"Управление данными [5 кр.]", hours:150, form:"Экзамен", points:74, grade:"хор", date:"28.12.24" },
+              { n:4, disc:"Объектно-ориентированное программирование 2 [5 кр.]", hours:150, form:"Экзамен", points:61, grade:"удов", date:"23.12.24" },
+              { n:5, disc:"Глобальные и локальные сети [5 кр.]", hours:150, form:"Экзамен", points:62, grade:"удов", date:"31.01.25" },
+              { n:6, disc:"Архитектура информационных систем [5 кр.]", hours:150, form:"Экзамен", points:67, grade:"удов", date:"28.01.25" },
+              { n:7, disc:"Java - программирования [5 кр.]", hours:150, form:"Экзамен", points:65, grade:"удов", date:"10.02.25" }
+            ]
+          },
+          {
+            title: "6-семестр",
+            creditsTotalText: "Итого зарегистрированных кредитов за 6-семестр: 40",
+            rows: [
+              { n:1, disc:"Компьютерная графика [5 кр.]", hours:0, form:"Экзамен", points:74, grade:"хор", date:"27.05.25" },
+              { n:2, disc:"Математическая логика и теория алгоритмов [5 кр.]", hours:0, form:"Экзамен", points:76, grade:"хор", date:"29.05.25" },
+              { n:3, disc:"Теория принятия решений [5 кр.]", hours:150, form:"Экзамен", points:75, grade:"хор", date:"23.05.25" },
+              { n:4, disc:"Системное программное обеспечение [5 кр.]", hours:0, form:"Экзамен", points:76, grade:"хор", date:"29.05.25" },
+              { n:5, disc:"Производственная практика [5 кр.]", hours:150, form:"Экзамен", points:77, grade:"хор", date:"01.09.25" },
+              { n:6, disc:"Информационный менеджмент [0 кр.]", hours:0, form:"Курс/пр", points:83, grade:"хор", date:"28.05.25" },
+              { n:7, disc:"Информационный менеджмент [5 кр.]", hours:150, form:"Экзамен", points:76, grade:"хор", date:"27.05.25" },
+              { n:8, disc:"Интеллектуальные системы и технологии [5 кр.]", hours:150, form:"Экзамен", points:18, grade:"н/у", date:"22.05.25" },
+              { n:9, disc:"SQL и процедурно-ориентированные языки [5 кр.]", hours:150, form:"Экзамен", points:75, grade:"хор", date:"29.05.25" }
+            ]
+          }
+        ]
+      },
+      {
+        label: "2025-26 учебный год",
+        blocks: [
+          {
+            title: "5-семестр",
+            creditsTotalText: "Итого зарегистрированных кредитов за 5-семестр: 30",
+            rows: [
+              { n:1, disc:"Конструирование программного обеспечения [4 кр.]", hours:120, form:"Экзамен", points:75, grade:"хор", date:"23.12.25" },
+              { n:2, disc:"Системное программирование [0 кр.]", hours:0, form:"Курс/раб", points:75, grade:"хор", date:"24.12.25" },
+              { n:3, disc:"Системное программирование [6 кр.]", hours:180, form:"Экзамен", points:77, grade:"хор", date:"25.12.25" },
+              { n:4, disc:"Администрирование сетей [6 кр.]", hours:180, form:"Экзамен", points:71, grade:"удов", date:"26.12.25" },
+              { n:5, disc:"Программирование в графических средах [5 кр.]", hours:150, form:"Экзамен", points:75, grade:"хор", date:"29.12.25" },
+              { n:6, disc:"Проектирование и архитектура программных систем 1 [4 кр.]", hours:120, form:"Экзамен", points:75, grade:"хор", date:"29.12.25" },
+              { n:7, disc:"Web-программирования [5 кр.]", hours:150, form:"Экзамен", points:61, grade:"удов", date:"30.12.25" }
+            ]
+          },
+          {
+            title: "6-семестр",
+            creditsTotalText: "Итого зарегистрированных кредитов за 6-семестр: 30",
+            rows: [
+              { n:1, disc:"Тестирование программного обеспечения [4 кр.]", hours:120, form:"Экзамен", points:70, grade:"удов", date:"22.05.2026" },
+              { n:2, disc:"Производственная практика 1 [3 кр.]", hours:90, form:"Экзамен", points:70, grade:"удов", date:"22.05.2026" },
+              { n:3, disc:"Современные языки программирования 1 [5 кр.]", hours:150, form:"Экзамен", points:68, grade:"хор", date:"26.05.2026" },
+              { n:4, disc:"Управление программными проектами [5 кр.]", hours:150, form:"Экзамен", points:65, grade:"хор", date:"29.05.2026" },
+              { n:5, disc:"Проектирование и архитектура программных систем 2 [0 кр.]", hours:0, form:"Курс/пр", points:0, grade:"", date:"_" },
+              { n:6, disc:"Проектирование и архитектура программных систем 2 [4 кр.]", hours:120, form:"Экзамен", points:68, grade:"хор", date:"02.06.2026" },
+              { n:7, disc:"Мультимедиа технологии [4 кр.]", hours:120, form:"Экзамен", points:68, grade:"хор", date:"05.06.2026" },
+              { n:8, disc:"Программирование на языке высокого уровня [5 кр.]", hours:150, form:"Экзамен", points:65, grade:"хор", date:"08.06.2026" }
+            ]
+          }
+        ]
+      }
+    ]
+  };
+
+  document.getElementById("perfList").innerHTML = DATA.perf.map(x=>`
+    <li class="mini-item"><span>${esc(x.title)}</span><span class="score">${x.score}</span></li>
+  `).join("");
+
+  const yearSelect = document.getElementById("yearSelect");
+  DATA.years.forEach((y,i)=>{
+    const o = document.createElement("option");
+    o.value = String(i);
+    o.textContent = y.label;
+    yearSelect.appendChild(o);
+  });
+  yearSelect.value = "1";
+  yearSelect.addEventListener("change", ()=>renderTable(parseInt(yearSelect.value)));
+  renderTable(1);
+
+  function renderTable(idx){
+    const y = DATA.years[idx];
+    let html = "";
+    y.blocks.forEach(b=>{
+      html += `<tr class="section-row"><td colspan="7">${esc(b.title)}</td></tr>`;
+      b.rows.forEach(r=>{
+        html += `<tr>
+          <td class="col-n">${r.n}</td>
+          <td>${esc(r.disc)}</td>
+          <td class="col-h">${r.hours}</td>
+          <td class="col-f">${esc(r.form)}</td>
+          <td class="col-b"><span class="points">${r.points||""}</span></td>
+          <td class="col-g">${r.grade?`<span class="grade-badge">${esc(r.grade)}</span>`:""}</td>
+          <td class="col-date">${esc(r.date)}</td>
+        </tr>`;
+      });
+      html += `<tr class="credits-row"><td colspan="7">${esc(b.creditsTotalText)}</td></tr>`;
+    });
+    document.getElementById("tbody").innerHTML = html;
+  }
+
+  function esc(s){
+    return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+  }
+</script>
+</body>
+</html>
